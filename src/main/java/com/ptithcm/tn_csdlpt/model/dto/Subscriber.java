@@ -27,6 +27,12 @@ public class Subscriber extends DatabaseInformation {
         super(serverName, port, databaseName);
         this.tenCS = tenCS;
     }
+    
+//    Methods
+    @Override
+    public String toString() {
+        return tenCS;
+    }
 
 //    Getters and setters
     public String getTenCS() {

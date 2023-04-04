@@ -4,7 +4,6 @@
  */
 package com.ptithcm.tn_csdlpt.repository;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.ptithcm.tn_csdlpt.configuration.DatabaseConnector;
 import com.ptithcm.tn_csdlpt.model.dto.Subscriber;
 import java.sql.Connection;

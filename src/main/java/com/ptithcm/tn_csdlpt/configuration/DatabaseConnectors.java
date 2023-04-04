@@ -23,7 +23,7 @@ public class DatabaseConnectors {
     
     static {
         try {
-            InputStream input = DatabaseConnectors.class.getClassLoader().getResourceAsStream("config-files/configMainSide.properties");
+            InputStream input = DatabaseConnectors.class.getClassLoader().getResourceAsStream("config-files/config-main-side.properties");
             Properties prop = new Properties();
             prop.load(input);
             databasePubConnector = new DatabaseConnector(

@@ -4,6 +4,8 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author MINHDAT
@@ -29,14 +31,14 @@ public class PnlStatusBar extends javax.swing.JPanel {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JPanel();
+        lblUsername = new javax.swing.JLabel();
+        lblFullName = new javax.swing.JLabel();
+        lblGroupName = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblNowDateTime = new javax.swing.JLabel();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -47,22 +49,22 @@ public class PnlStatusBar extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
+        jLabel33.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel33.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
 
-        jLabel1.setText("Mã: 001");
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jLabel1);
+        lblUsername.setText("Mã: 001");
+        lblUsername.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabel33.add(lblUsername);
 
-        jLabel3.setText("Họ và tên: Lương Trang");
-        jLabel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jLabel3);
+        lblFullName.setText("Họ và tên: Lương Trang");
+        lblFullName.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabel33.add(lblFullName);
 
-        jLabel4.setText("Nhóm quyền: Công ty");
-        jLabel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jLabel4);
+        lblGroupName.setText("Nhóm quyền: Công ty");
+        lblGroupName.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabel33.add(lblGroupName);
 
-        add(jPanel1, java.awt.BorderLayout.WEST);
+        add(jLabel33, java.awt.BorderLayout.WEST);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 4, 2));
@@ -73,26 +75,59 @@ public class PnlStatusBar extends javax.swing.JPanel {
         jLabel2.setText("Time:");
         jPanel3.add(jLabel2);
 
-        jLabel5.setText("11:20 AM");
-        jPanel3.add(jLabel5);
+        lblNowDateTime.setText("11:20 AM");
+        jPanel3.add(lblNowDateTime);
 
         jPanel2.add(jPanel3);
 
         add(jPanel2, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
+//    Getters and setters
+    public JLabel getLblFullName() {
+        return lblFullName;
+    }
 
+    public void setLblFullName(JLabel lblFullName) {
+        this.lblFullName = lblFullName;
+    }
+
+    public JLabel getLblGroupName() {
+        return lblGroupName;
+    }
+
+    public void setLblGroupName(JLabel lblGroupName) {
+        this.lblGroupName = lblGroupName;
+    }
+
+    public JLabel getLblNowDateTime() {
+        return lblNowDateTime;
+    }
+
+    public void setLblNowDateTime(JLabel lblNowDateTime) {
+        this.lblNowDateTime = lblNowDateTime;
+    }
+
+    public JLabel getLblUsername() {
+        return lblUsername;
+    }
+
+//    Getters and setters
+    public void setLblUsername(JLabel lblUsername) {
+        this.lblUsername = lblUsername;
+    }    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jLabel33;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblFullName;
+    private javax.swing.JLabel lblGroupName;
+    private javax.swing.JLabel lblNowDateTime;
+    private javax.swing.JLabel lblUsername;
     // End of variables declaration//GEN-END:variables
 }

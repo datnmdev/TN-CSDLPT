@@ -4,17 +4,27 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import com.ptithcm.tn_csdlpt.model.dto.Account;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author MINHDAT
  */
 public class FrmMain extends javax.swing.JFrame {
+    private PnlMenu pnlMenu;
+    private CustomTabbedPane tabbedPaneWorkspace;
+    private PnlStatusBar pnlStatusBar;
 
     /**
      * Creates new form FrmMain
      */
-    public FrmMain() {
+    public FrmMain(Account account) {
         initComponents();
+        initMyComponents();
+        hideComponent(account.getGroupName());
+        updateStatusBarData(account);
     }
 
     /**
@@ -26,132 +36,87 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlStatusBar1 = new com.ptithcm.tn_csdlpt.view.PnlStatusBar();
-        pnlMenu1 = new com.ptithcm.tn_csdlpt.view.PnlMenu();
-        customTabbedPane1 = new com.ptithcm.tn_csdlpt.view.CustomTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        pnlMenuContainer = new javax.swing.JPanel();
+        pnlWorkspaceContainer = new javax.swing.JPanel();
+        pnlStatusbarContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().add(pnlStatusBar1, java.awt.BorderLayout.PAGE_END);
-        getContentPane().add(pnlMenu1, java.awt.BorderLayout.NORTH);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
+        pnlMenuContainer.setLayout(new java.awt.CardLayout());
+        getContentPane().add(pnlMenuContainer, java.awt.BorderLayout.NORTH);
 
-        customTabbedPane1.addTab("Tạo giảng viên", jPanel1);
+        pnlWorkspaceContainer.setLayout(new java.awt.CardLayout());
+        getContentPane().add(pnlWorkspaceContainer, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
-
-        customTabbedPane1.addTab("Quản lý bộ đề", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
-
-        customTabbedPane1.addTab("Quản lý sinh viên", jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
-
-        customTabbedPane1.addTab("Quản lý giảo viên", jPanel4);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
-
-        customTabbedPane1.addTab("Quản lý môn học", jPanel5);
-
-        getContentPane().add(customTabbedPane1, java.awt.BorderLayout.CENTER);
+        pnlStatusbarContainer.setLayout(new java.awt.CardLayout());
+        getContentPane().add(pnlStatusbarContainer, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    public void initMyComponents() {
+//        Khởi tạo các component
+        pnlMenu = new PnlMenu();
+        tabbedPaneWorkspace = new CustomTabbedPane();
+        pnlStatusBar = new PnlStatusBar();
+        
+//        Thêm các component vừa tạo vào các vùng chứa
+        pnlMenuContainer.add(pnlMenu);
+        pnlWorkspaceContainer.add(tabbedPaneWorkspace);
+        pnlStatusbarContainer.add(pnlStatusBar);
+    }
+    
+    //    Ẩn và hiện các chức năng ứng với các nhóm quyền tương ứng
+    public void hideComponent(String groupName) {
+        switch(groupName) {
+            case "SINHVIEN":
+                pnlMenu.getTabManager().removeTabAt(1);
+                pnlMenu.getBtnExamCalendarRegister().setVisible(false);
+                pnlMenu.getTabManager().removeTabAt(2);
+                break;
+            case "GIANGVIEN":
+                pnlMenu.getBtnTeacherManage().setVisible(false);
+                pnlMenu.getBtnStudentManage().setVisible(false);
+                pnlMenu.getBtnClassroomManage().setVisible(false);
+                pnlMenu.getBtnSubjectManage().setVisible(false);
+                pnlMenu.getBtnReportExamCalendar().setVisible(false);
+                break;
+            case "TRUONG":
+                pnlMenu.getBtnExamCalendarRegister().setVisible(false);
+                pnlMenu.getBtnDoExam().setVisible(false);
+                break;
+            case "COSO":
+                pnlMenu.getBtnExamCalendarRegister().setVisible(false);
+                pnlMenu.getBtnDoExam().setVisible(false);
+                break;
+        }
+    }
+    
+//    Cập nhật thông tin cho thanh trạng thái khi đăng nhập thành công
+    public void updateStatusBarData(Account account) {
+        pnlStatusBar.getLblUsername().setText(account.getUsername());
+        pnlStatusBar.getLblFullName().setText(account.getFullName());
+        pnlStatusBar.getLblGroupName().setText(account.getGroupName());
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                    String formattedDateTime = simpleDateFormat.format(new Date());
+                    pnlStatusBar.getLblNowDateTime().setText(formattedDateTime);
+                    System.out.println(formattedDateTime);
+                    try {
+                        sleep(1);
+                    } catch (Exception e) {
+                    }
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmMain().setVisible(true);
-            }
-        });
+        };
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.ptithcm.tn_csdlpt.view.CustomTabbedPane customTabbedPane1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private com.ptithcm.tn_csdlpt.view.PnlMenu pnlMenu1;
-    private com.ptithcm.tn_csdlpt.view.PnlStatusBar pnlStatusBar1;
+    private javax.swing.JPanel pnlMenuContainer;
+    private javax.swing.JPanel pnlStatusbarContainer;
+    private javax.swing.JPanel pnlWorkspaceContainer;
     // End of variables declaration//GEN-END:variables
 }

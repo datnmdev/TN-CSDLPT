@@ -54,9 +54,14 @@ public class DatabaseConnector {
         sqlServerDataSource.setEncrypt("false");
     }
     
-     public void setDataSource(Account account) {
+    public void setDataSource(Account account) {
         sqlServerDataSource.setUser(account.getLoginName());
         sqlServerDataSource.setPassword(account.getPassword());
+    }
+    
+    public void setDataSource(String loginName, String password) {
+        sqlServerDataSource.setUser(loginName);
+        sqlServerDataSource.setPassword(password);
     }
      
     public void setDataSource(DatabaseInformation databaseInformation, Account account) {

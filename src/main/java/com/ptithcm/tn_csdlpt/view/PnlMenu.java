@@ -4,6 +4,10 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 /**
  *
  * @author MINHDAT
@@ -26,213 +30,359 @@ public class PnlMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        tabManager = new javax.swing.JTabbedPane();
+        tabSystem = new javax.swing.JPanel();
+        btnInfoAccount = new javax.swing.JPanel();
+        jlabel1 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        tabManage = new javax.swing.JPanel();
+        btnTeacherManage = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        btnStudentManage = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
+        btnClassroomManage = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        btnSubjectManage = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
+        btnQuestionManage = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        tabExam = new javax.swing.JPanel();
+        btnExamCalendarRegister = new javax.swing.JPanel();
+        btnExamRegister = new javax.swing.JLabel();
+        btnDoExam = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        btnShowExamResult = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        tabReport = new javax.swing.JPanel();
+        btnReportMarkTable = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        btnReportExamCalendar = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel26 = new javax.swing.JLabel();
 
         setLayout(new java.awt.CardLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        tabManager.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        tabSystem.setBackground(new java.awt.Color(255, 255, 255));
+        tabSystem.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/add-user.png"))); // NOI18N
-        jLabel12.setText("Thêm tài khoản");
-        jPanel11.add(jLabel12);
+        btnInfoAccount.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.add(jPanel11);
+        jlabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jlabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/add-user.png"))); // NOI18N
+        jlabel1.setText("Thông tin cá nhân");
+        btnInfoAccount.add(jlabel1);
 
-        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        tabSystem.add(btnInfoAccount);
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/logout.png"))); // NOI18N
-        jLabel14.setText("Đăng xuất");
-        jPanel12.add(jLabel14);
+        btnLogout.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.add(jPanel12);
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/logout.png"))); // NOI18N
+        jLabel2.setText("Đăng xuất");
+        btnLogout.add(jLabel2);
 
-        jTabbedPane1.addTab("HỆ THỐNG", jPanel2);
+        tabSystem.add(btnLogout);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        tabManager.addTab("HỆ THỐNG", tabSystem);
+
+        tabManage.setBackground(new java.awt.Color(255, 255, 255));
         java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT);
         flowLayout2.setAlignOnBaseline(true);
-        jPanel5.setLayout(flowLayout2);
+        tabManage.setLayout(flowLayout2);
 
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        btnTeacherManage.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/teacher.png"))); // NOI18N
+        jLabel3.setText("Giảng viên");
+        btnTeacherManage.add(jLabel3);
+
+        tabManage.add(btnTeacherManage);
+
+        btnStudentManage.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/teacher.png"))); // NOI18N
-        jLabel4.setText("Giảng viên");
-        jPanel7.add(jLabel4);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/student.png"))); // NOI18N
+        jLabel4.setText("Sinh viên");
+        btnStudentManage.add(jLabel4);
 
-        jPanel5.add(jPanel7);
+        tabManage.add(btnStudentManage);
 
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        btnClassroomManage.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/classroom.png"))); // NOI18N
+        jLabel5.setText("Khoa/Lớp");
+        btnClassroomManage.add(jLabel5);
+
+        tabManage.add(btnClassroomManage);
+
+        btnSubjectManage.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/student.png"))); // NOI18N
-        jLabel6.setText("Sinh viên");
-        jPanel8.add(jLabel6);
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/subject.png"))); // NOI18N
+        jLabel6.setText("Môn học");
+        btnSubjectManage.add(jLabel6);
 
-        jPanel5.add(jPanel8);
+        tabManage.add(btnSubjectManage);
 
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        btnQuestionManage.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/classroom.png"))); // NOI18N
-        jLabel8.setText("Khoa/Lớp");
-        jPanel9.add(jLabel8);
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/topic.png"))); // NOI18N
+        jLabel7.setText("Bộ đề");
+        btnQuestionManage.add(jLabel7);
 
-        jPanel5.add(jPanel9);
+        tabManage.add(btnQuestionManage);
 
-        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        tabManager.addTab("DANH MỤC", tabManage);
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/subject.png"))); // NOI18N
-        jLabel10.setText("Môn học");
-        jPanel10.add(jLabel10);
+        tabExam.setBackground(new java.awt.Color(255, 255, 255));
+        tabExam.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jPanel5.add(jPanel10);
+        btnExamCalendarRegister.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        btnExamRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExamRegister.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnExamRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/register.png"))); // NOI18N
+        btnExamRegister.setText("Đăng ký thi");
+        btnExamCalendarRegister.add(btnExamRegister);
+
+        tabExam.add(btnExamCalendarRegister);
+
+        btnDoExam.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/exam.png"))); // NOI18N
+        jLabel11.setText("Tiến hành thi");
+        btnDoExam.add(jLabel11);
+
+        tabExam.add(btnDoExam);
+
+        btnShowExamResult.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-results.png"))); // NOI18N
+        jLabel12.setText("Xem kết quả thi");
+        btnShowExamResult.add(jLabel12);
+
+        tabExam.add(btnShowExamResult);
+
+        tabManager.addTab("THI", tabExam);
+
+        tabReport.setBackground(new java.awt.Color(255, 255, 255));
+        tabReport.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnReportMarkTable.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/table.png"))); // NOI18N
+        jLabel13.setText("Bảng điểm");
+        btnReportMarkTable.add(jLabel13);
+
+        tabReport.add(btnReportMarkTable);
+
+        btnReportExamCalendar.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/topic.png"))); // NOI18N
-        jLabel16.setText("Bộ đề");
-        jPanel13.add(jLabel16);
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-register-list.png"))); // NOI18N
+        jLabel16.setText("Danh sách đăng ký thi");
+        btnReportExamCalendar.add(jLabel16);
 
-        jPanel5.add(jPanel13);
+        tabReport.add(btnReportExamCalendar);
 
-        jTabbedPane1.addTab("QUẢN LÝ", jPanel5);
+        tabManager.addTab("BÁO CÁO", tabReport);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/register.png"))); // NOI18N
-        jLabel22.setText("Đăng ký thi");
-        jPanel16.add(jLabel22);
-
-        jPanel1.add(jPanel16);
-
-        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/exam.png"))); // NOI18N
-        jLabel18.setText("Tiến hành thi");
-        jPanel14.add(jLabel18);
-
-        jPanel1.add(jPanel14);
-
-        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-results.png"))); // NOI18N
-        jLabel20.setText("Xem kết quả thi");
-        jPanel15.add(jLabel20);
-
-        jPanel1.add(jPanel15);
-
-        jTabbedPane1.addTab("THI", jPanel1);
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/table.png"))); // NOI18N
-        jLabel24.setText("Bảng điểm");
-        jPanel17.add(jLabel24);
-
-        jPanel4.add(jPanel17);
-
-        jPanel18.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-register-list.png"))); // NOI18N
-        jLabel26.setText("Danh sách đăng ký thi");
-        jPanel18.add(jLabel26);
-
-        jPanel4.add(jPanel18);
-
-        jTabbedPane1.addTab("BÁO CÁO", jPanel4);
-
-        add(jTabbedPane1, "card2");
+        add(tabManager, "card2");
     }// </editor-fold>//GEN-END:initComponents
 
+//    Getters and setters
+    public JPanel getBtnClassroomManage() {
+        return btnClassroomManage;
+    }
 
+    public void setBtnClassroomManage(JPanel btnClassroomManage) {
+        this.btnClassroomManage = btnClassroomManage;
+    }
+
+    public JPanel getBtnDoExam() {
+        return btnDoExam;
+    }
+
+    public void setBtnDoExam(JPanel btnDoExam) {
+        this.btnDoExam = btnDoExam;
+    }
+
+    public JPanel getBtnExamCalendarRegister() {
+        return btnExamCalendarRegister;
+    }
+
+    public void setBtnExamCalendarRegister(JPanel btnExamCalendarRegister) {
+        this.btnExamCalendarRegister = btnExamCalendarRegister;
+    }
+
+    public JLabel getBtnExamRegister() {
+        return btnExamRegister;
+    }
+
+    public void setBtnExamRegister(JLabel btnExamRegister) {
+        this.btnExamRegister = btnExamRegister;
+    }
+
+    public JPanel getBtnInfoAccount() {
+        return btnInfoAccount;
+    }
+
+    public void setBtnInfoAccount(JPanel btnInfoAccount) {
+        this.btnInfoAccount = btnInfoAccount;
+    }
+
+    public JPanel getBtnLogout() {
+        return btnLogout;
+    }
+
+    public void setBtnLogout(JPanel btnLogout) {
+        this.btnLogout = btnLogout;
+    }
+
+    public JPanel getBtnQuestionManage() {
+        return btnQuestionManage;
+    }
+
+    public void setBtnQuestionManage(JPanel btnQuestionManage) {
+        this.btnQuestionManage = btnQuestionManage;
+    }
+
+    public JPanel getBtnReportExamCalendar() {
+        return btnReportExamCalendar;
+    }
+
+    public void setBtnReportExamCalendar(JPanel btnReportExamCalendar) {
+        this.btnReportExamCalendar = btnReportExamCalendar;
+    }
+
+    public JPanel getBtnReportMarkTable() {
+        return btnReportMarkTable;
+    }
+
+    public void setBtnReportMarkTable(JPanel btnReportMarkTable) {
+        this.btnReportMarkTable = btnReportMarkTable;
+    }
+
+    public JPanel getBtnShowExamResult() {
+        return btnShowExamResult;
+    }
+
+    public void setBtnShowExamResult(JPanel btnShowExamResult) {
+        this.btnShowExamResult = btnShowExamResult;
+    }
+
+    public JPanel getBtnStudentManage() {
+        return btnStudentManage;
+    }
+
+    public void setBtnStudentManage(JPanel btnStudentManage) {
+        this.btnStudentManage = btnStudentManage;
+    }
+
+    public JPanel getBtnSubjectManage() {
+        return btnSubjectManage;
+    }
+
+    public void setBtnSubjectManage(JPanel btnSubjectManage) {
+        this.btnSubjectManage = btnSubjectManage;
+    }
+
+    public JPanel getBtnTeacherManage() {
+        return btnTeacherManage;
+    }
+
+    public void setBtnTeacherManage(JPanel btnTeacherManage) {
+        this.btnTeacherManage = btnTeacherManage;
+    }
+
+    public JPanel getTabExam() {
+        return tabExam;
+    }
+
+    public void setTabExam(JPanel tabExam) {
+        this.tabExam = tabExam;
+    }
+
+    public JPanel getTabManage() {
+        return tabManage;
+    }
+
+    public void setTabManage(JPanel tabManage) {
+        this.tabManage = tabManage;
+    }
+
+    public JPanel getTabReport() {
+        return tabReport;
+    }
+
+    public void setTabReport(JPanel tabReport) {
+        this.tabReport = tabReport;
+    }
+
+    public JPanel getTabSystem() {
+        return tabSystem;
+    }
+
+    public void setTabSystem(JPanel tabSystem) {
+        this.tabSystem = tabSystem;
+    }
+
+    public JTabbedPane getTabManager() {
+        return tabManager;
+    }
+
+    public void setTabManager(JTabbedPane tabManager) {
+        this.tabManager = tabManager;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JPanel btnClassroomManage;
+    private javax.swing.JPanel btnDoExam;
+    private javax.swing.JPanel btnExamCalendarRegister;
+    private javax.swing.JLabel btnExamRegister;
+    private javax.swing.JPanel btnInfoAccount;
+    private javax.swing.JPanel btnLogout;
+    private javax.swing.JPanel btnQuestionManage;
+    private javax.swing.JPanel btnReportExamCalendar;
+    private javax.swing.JPanel btnReportMarkTable;
+    private javax.swing.JPanel btnShowExamResult;
+    private javax.swing.JPanel btnStudentManage;
+    private javax.swing.JPanel btnSubjectManage;
+    private javax.swing.JPanel btnTeacherManage;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jlabel1;
+    private javax.swing.JPanel tabExam;
+    private javax.swing.JPanel tabManage;
+    private javax.swing.JTabbedPane tabManager;
+    private javax.swing.JPanel tabReport;
+    private javax.swing.JPanel tabSystem;
     // End of variables declaration//GEN-END:variables
 }
