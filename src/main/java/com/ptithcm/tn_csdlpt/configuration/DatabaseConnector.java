@@ -72,7 +72,7 @@ public class DatabaseConnector {
         sqlServerDataSource.setPassword(account.getPassword());
         sqlServerDataSource.setEncrypt("false");
     }
-    
+
 //    Getters and setters
     public SQLServerDataSource getSqlServerDataSource() {
         return sqlServerDataSource;

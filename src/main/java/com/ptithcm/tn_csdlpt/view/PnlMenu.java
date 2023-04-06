@@ -5,6 +5,7 @@
 package com.ptithcm.tn_csdlpt.view;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -33,7 +34,7 @@ public class PnlMenu extends javax.swing.JPanel {
         tabManager = new javax.swing.JTabbedPane();
         tabSystem = new javax.swing.JPanel();
         btnInfoAccount = new javax.swing.JPanel();
-        jlabel1 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         tabManage = new javax.swing.JPanel();
@@ -68,16 +69,27 @@ public class PnlMenu extends javax.swing.JPanel {
         tabSystem.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         btnInfoAccount.setBackground(new java.awt.Color(255, 255, 255));
+        btnInfoAccount.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInfoAccountMouseClicked(evt);
+            }
+        });
 
-        jlabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jlabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/add-user.png"))); // NOI18N
-        jlabel1.setText("Thông tin cá nhân");
-        btnInfoAccount.add(jlabel1);
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/user.png"))); // NOI18N
+        jLabel20.setText("Thông tin cá nhân");
+        jLabel20.setName(""); // NOI18N
+        btnInfoAccount.add(jLabel20);
 
         tabSystem.add(btnInfoAccount);
 
         btnLogout.setBackground(new java.awt.Color(255, 255, 255));
+        btnLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLogoutMouseClicked(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -135,11 +147,14 @@ public class PnlMenu extends javax.swing.JPanel {
         tabManage.add(btnSubjectManage);
 
         btnQuestionManage.setBackground(new java.awt.Color(255, 255, 255));
+        btnQuestionManage.setName("Quản lý bộ đề"); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/topic.png"))); // NOI18N
         jLabel7.setText("Bộ đề");
+        jLabel7.setName(""); // NOI18N
+        jLabel7.setRequestFocusEnabled(false);
         btnQuestionManage.add(jLabel7);
 
         tabManage.add(btnQuestionManage);
@@ -151,10 +166,12 @@ public class PnlMenu extends javax.swing.JPanel {
 
         btnExamCalendarRegister.setBackground(new java.awt.Color(255, 255, 255));
 
+        btnExamRegister.setBackground(new java.awt.Color(255, 255, 255));
         btnExamRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnExamRegister.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnExamRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/register.png"))); // NOI18N
         btnExamRegister.setText("Đăng ký thi");
+        btnExamRegister.setOpaque(true);
         btnExamCalendarRegister.add(btnExamRegister);
 
         tabExam.add(btnExamCalendarRegister);
@@ -208,6 +225,14 @@ public class PnlMenu extends javax.swing.JPanel {
 
         add(tabManager, "card2");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnInfoAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInfoAccountMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInfoAccountMouseClicked
+
+    private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
+        JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn đăng xuất?", "Nhắc nhở", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btnLogoutMouseClicked
 
 //    Getters and setters
     public JPanel getBtnClassroomManage() {
@@ -353,7 +378,7 @@ public class PnlMenu extends javax.swing.JPanel {
     public void setTabManager(JTabbedPane tabManager) {
         this.tabManager = tabManager;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btnClassroomManage;
     private javax.swing.JPanel btnDoExam;
@@ -373,12 +398,12 @@ public class PnlMenu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jlabel1;
     private javax.swing.JPanel tabExam;
     private javax.swing.JPanel tabManage;
     private javax.swing.JTabbedPane tabManager;

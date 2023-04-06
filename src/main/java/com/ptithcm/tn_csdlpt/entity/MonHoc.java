@@ -20,6 +20,11 @@ public class MonHoc {
         this.maMH = maMH;
         this.tenMH = tenMH;
     }
+
+    @Override
+    public String toString() {
+        return maMH + " - " + tenMH;
+    }
     
 //    Getters and setters
     public String getMaMH() {

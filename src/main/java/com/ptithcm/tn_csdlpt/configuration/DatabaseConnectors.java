@@ -4,9 +4,10 @@
  */
 package com.ptithcm.tn_csdlpt.configuration;
 
+import com.ptithcm.tn_csdlpt.global_variable.ResetInterface;
 import com.ptithcm.tn_csdlpt.model.dto.Account;
 import com.ptithcm.tn_csdlpt.model.dto.DatabaseInformation;
-import com.ptithcm.tn_csdlpt.view.ExceptionMessageBox;
+import com.ptithcm.tn_csdlpt.view.MessageBox;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Properties;
  * @author MINHDAT
  */
 
-public class DatabaseConnectors {
+public class DatabaseConnectors implements ResetInterface {
     public static DatabaseConnector databasePubConnector;
     public static Map<String,DatabaseConnector> databaseSubConnectors = null;
     
@@ -35,7 +36,12 @@ public class DatabaseConnectors {
                     new Account(prop.getProperty("username"), prop.getProperty("password"))
             );
         } catch (IOException ex) {
-            ExceptionMessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
         }
+    }
+
+    @Override
+    public void reset() {
+        databaseSubConnectors = null;
     }
 }

@@ -11,6 +11,11 @@ import java.util.List;
  *
  * @author MINHDAT
  */
-public class SubscribersVariables {
+public class SubscribersVariables implements ResetInterface {
     public static List<Subscriber> subscribers;
+    
+    @Override
+    public void reset() {
+        subscribers = null;
+    }
 }

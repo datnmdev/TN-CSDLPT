@@ -4,7 +4,6 @@
  */
 package com.ptithcm.tn_csdlpt.repository;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,5 +13,5 @@ import java.util.List;
  */
 public interface SelectDataRepositoryInterface {
     public abstract List<Object> findAll() throws SQLException;
-    public abstract Object find() throws SQLException;
+    public abstract Object find(Object object) throws SQLException;
 }

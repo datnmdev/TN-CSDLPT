@@ -54,7 +54,7 @@ public class SqlServerRepository implements SelectDataRepositoryInterface {
 
     @Override
     public List<Object> findAll() throws SQLException {
-        String sql = "SELECT TENCS, TENSERVER, DATABASENAME FROM V_DS_PHANMANH";
+        String sql = "SELECT * FROM V_DS_PHANMANH";
         
         try (Connection cnn = databaseConnector.getConnection();
             Statement stmt = cnn.createStatement();
@@ -74,9 +74,9 @@ public class SqlServerRepository implements SelectDataRepositoryInterface {
             return subscribers;
         }
     }
-    
+
     @Override
-    public Object find() throws SQLException {
+    public Object find(Object object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -10,6 +10,11 @@ import com.ptithcm.tn_csdlpt.configuration.DatabaseConnector;
  *
  * @author MINHDAT
  */
-public class LoginVariables {
-    public DatabaseConnector databaseConnector;
+public class LoginVariables implements ResetInterface {
+    public static DatabaseConnector databaseConnector;
+
+    @Override
+    public void reset() {
+        databaseConnector = null;
+    }
 }

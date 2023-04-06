@@ -27,6 +27,11 @@ public class GiaoVien {
         this.maKH = maKH;
     }
 
+    @Override
+    public String toString() {
+        return maGV + " - " + ho + " " + ten;
+    }
+    
 //    Getters and setters
     public String getMaGV() {
         return maGV;

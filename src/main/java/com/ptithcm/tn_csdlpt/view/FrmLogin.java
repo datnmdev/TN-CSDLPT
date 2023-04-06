@@ -9,7 +9,6 @@ import com.ptithcm.tn_csdlpt.model.dto.Account;
 import com.ptithcm.tn_csdlpt.model.dto.Subscriber;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -45,7 +44,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtLoginName = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        cbxPasswordRemember = new javax.swing.JCheckBox();
+        cbxShowPassword = new javax.swing.JCheckBox();
         btnLogin = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
 
@@ -81,8 +80,13 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Mật khẩu");
 
-        cbxPasswordRemember.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cbxPasswordRemember.setText("Nhớ mật khẩu");
+        cbxShowPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbxShowPassword.setText("Hiện mật khẩu");
+        cbxShowPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbxShowPasswordMouseClicked(evt);
+            }
+        });
 
         btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +123,7 @@ public class FrmLogin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbxPasswordRemember)
+                                        .addComponent(cbxShowPassword)
                                         .addComponent(txtLoginName)
                                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGap(26, 26, 26)))
@@ -149,7 +153,7 @@ public class FrmLogin extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(13, 13, 13)
-                    .addComponent(cbxPasswordRemember, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxShowPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -163,6 +167,14 @@ public class FrmLogin extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         LoginController.login(this);
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void cbxShowPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxShowPasswordMouseClicked
+        if (cbxShowPassword.isSelected()) {
+            txtPassword.setEchoChar((char) 0);
+        } else {
+            txtPassword.setEchoChar('\u2022');
+        }
+    }//GEN-LAST:event_cbxShowPasswordMouseClicked
 
 //    Methods
     public void fillSideComboBox(List<Subscriber> subscribers) {
@@ -179,6 +191,10 @@ public class FrmLogin extends javax.swing.JFrame {
                 txtLoginName.getText(), 
                 new String(txtPassword.getPassword())
         );
+    }
+    
+    public boolean isShowPassword() {
+        return cbxShowPassword.isSelected();
     }
     
     public void directFrmMain(Account account) {
@@ -209,14 +225,6 @@ public class FrmLogin extends javax.swing.JFrame {
         this.cboSide = cboSide;
     }
 
-    public JCheckBox getCbxPasswordRemember() {
-        return cbxPasswordRemember;
-    }
-
-    public void setCbxPasswordRemember(JCheckBox cbxPasswordRemember) {
-        this.cbxPasswordRemember = cbxPasswordRemember;
-    }
-
     public JTextField getTxtLoginName() {
         return txtLoginName;
     }
@@ -237,7 +245,7 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnLogin;
     private javax.swing.JComboBox<String> cboObject;
     private javax.swing.JComboBox<String> cboSide;
-    private javax.swing.JCheckBox cbxPasswordRemember;
+    private javax.swing.JCheckBox cbxShowPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

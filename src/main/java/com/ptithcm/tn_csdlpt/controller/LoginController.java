@@ -11,18 +11,23 @@ import com.ptithcm.tn_csdlpt.model.dto.Account;
 import com.ptithcm.tn_csdlpt.service.LoginService;
 import com.ptithcm.tn_csdlpt.service.SubscriberService;
 import com.ptithcm.tn_csdlpt.service.ValidateFormService;
-import com.ptithcm.tn_csdlpt.view.ExceptionMessageBox;
+import com.ptithcm.tn_csdlpt.view.MessageBox;
 import com.ptithcm.tn_csdlpt.view.FrmLogin;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author MINHDAT
  */
 public class LoginController {
+//    Khởi động login
+    public static void startFrmLogin(FrmLogin frmLogin) {
+        PrepareController.findAndSaveSubscriberInformation();
+        frmLogin.setLocationRelativeTo(null);
+        frmLogin.setVisible(true);
+        LoginController.renderActiveSubcribers(frmLogin);
+    }
     
 //    Hiển thị danh sách các server phân mảnh lên combobox
     public static void renderActiveSubcribers(FrmLogin frmLogin) {
@@ -33,7 +38,7 @@ public class LoginController {
                     )
             );
         } catch (IOException ex) {
-            ExceptionMessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
         }
     }
     
@@ -47,11 +52,11 @@ public class LoginController {
             loginService.login(loginData);
             frmLogin.directFrmMain(loginData);
         } catch (InvalidInputException ex) {
-            ExceptionMessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
         } catch (IOException ex) {
-            ExceptionMessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
         } catch (SQLException ex) {
-            ExceptionMessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(frmLogin, ex.getClass().getName(), ex.getMessage());
         }
     }
 }

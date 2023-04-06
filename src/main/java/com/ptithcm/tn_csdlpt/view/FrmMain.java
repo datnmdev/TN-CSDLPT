@@ -4,15 +4,22 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import com.ptithcm.tn_csdlpt.controller.BoDeController;
+import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.model.dto.Account;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFrame;
 
 /**
  *
  * @author MINHDAT
  */
 public class FrmMain extends javax.swing.JFrame {
+    private FrmMain _this = this;
     private PnlMenu pnlMenu;
     private CustomTabbedPane tabbedPaneWorkspace;
     private PnlStatusBar pnlStatusBar;
@@ -25,6 +32,7 @@ public class FrmMain extends javax.swing.JFrame {
         initMyComponents();
         hideComponent(account.getGroupName());
         updateStatusBarData(account);
+        addEvents();
     }
 
     /**
@@ -41,6 +49,9 @@ public class FrmMain extends javax.swing.JFrame {
         pnlStatusbarContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Thi trắc nghiệm");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         pnlMenuContainer.setLayout(new java.awt.CardLayout());
         getContentPane().add(pnlMenuContainer, java.awt.BorderLayout.NORTH);
@@ -54,6 +65,30 @@ public class FrmMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+//    Methods
+    public void addEvents() {
+        pnlMenu.getBtnQuestionManage().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnQuestionManage().getName();
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+                    try {
+                        PnlWorkSection pnlWorkSection = new PnlWorkSection(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount()-1, tabName);
+                        BoDeController.renderData(_this, pnlWorkSection);
+                    } catch (IOException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    }
+                    
+                }
+            }
+        });
+    }
+    
     public void initMyComponents() {
 //        Khởi tạo các component
         pnlMenu = new PnlMenu();
@@ -104,14 +139,40 @@ public class FrmMain extends javax.swing.JFrame {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
                     String formattedDateTime = simpleDateFormat.format(new Date());
                     pnlStatusBar.getLblNowDateTime().setText(formattedDateTime);
-                    System.out.println(formattedDateTime);
                     try {
                         sleep(1);
-                    } catch (Exception e) {
+                    } catch (InterruptedException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                        interrupt();
                     }
                 }
             }
-        };
+        }.start();
+    }
+    
+//    Getters and setters
+    public PnlMenu getPnlMenu() {
+        return pnlMenu;
+    }
+
+    public void setPnlMenu(PnlMenu pnlMenu) {
+        this.pnlMenu = pnlMenu;
+    }
+
+    public CustomTabbedPane getTabbedPaneWorkspace() {
+        return tabbedPaneWorkspace;
+    }
+
+    public void setTabbedPaneWorkspace(CustomTabbedPane tabbedPaneWorkspace) {
+        this.tabbedPaneWorkspace = tabbedPaneWorkspace;
+    }
+
+    public PnlStatusBar getPnlStatusBar() {
+        return pnlStatusBar;
+    }
+
+    public void setPnlStatusBar(PnlStatusBar pnlStatusBar) {
+        this.pnlStatusBar = pnlStatusBar;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

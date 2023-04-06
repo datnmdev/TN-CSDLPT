@@ -6,6 +6,7 @@ package com.ptithcm.tn_csdlpt.service;
 
 import com.ptithcm.tn_csdlpt.configuration.DatabaseConnector;
 import com.ptithcm.tn_csdlpt.exception.InvalidInputException;
+import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.model.dto.Account;
 import com.ptithcm.tn_csdlpt.repository.LoginRepository;
 import java.io.IOException;
@@ -41,6 +42,10 @@ public class LoginService {
         
         try (Connection conn = databaseConnector.getConnection();) {
             new LoginRepository(databaseConnector).getUserInfo(account);
+            databaseConnector.setAccount(account);
         }
+        
+//        Gán thông tin đăng nhập và kết nối vào biến toàn cục
+        LoginVariables.databaseConnector = databaseConnector;
     }
 }

@@ -7,7 +7,7 @@ package com.ptithcm.tn_csdlpt.controller;
 import com.ptithcm.tn_csdlpt.global_variable.SubscribersVariables;
 import com.ptithcm.tn_csdlpt.service.DatabaseConnectorService;
 import com.ptithcm.tn_csdlpt.service.SubscriberService;
-import com.ptithcm.tn_csdlpt.view.ExceptionMessageBox;
+import com.ptithcm.tn_csdlpt.view.MessageBox;
 import java.sql.SQLException;
 
 /**
@@ -27,7 +27,7 @@ public class PrepareController {
                     databaseConnectorService.createDatabaseSubscriberConnectors(SubscribersVariables.subscribers)
             );
         } catch (SQLException ex) {
-            ExceptionMessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+            MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
             System.exit(0);
         }
     }

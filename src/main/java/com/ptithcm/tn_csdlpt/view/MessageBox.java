@@ -4,19 +4,19 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
-import javax.swing.JFrame;
+import java.awt.Component;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author MINHDAT
  */
-public class ExceptionMessageBox {
+public class MessageBox {
     public static void showErrorBox(String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
     
-     public static void showErrorBox(JFrame parentComponent, String title, String message) {
+     public static void showErrorBox(Component parentComponent, String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
     
