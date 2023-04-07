@@ -26,6 +26,7 @@
           <Image iconType="3" name="/icons/24x24/plus.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
+        <Property name="name" type="java.lang.String" value="Add" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnUpdate">
@@ -34,6 +35,8 @@
           <Image iconType="3" name="/icons/24x24/edit.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Ch&#x1ec9;nh s&#x1eed;a"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="Update" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnDelete">
@@ -42,6 +45,8 @@
           <Image iconType="3" name="/icons/24x24/delete.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="Delete" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnSave">
@@ -50,6 +55,8 @@
           <Image iconType="3" name="/icons/24x24/save.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Ghi"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="Save" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnUndo">
@@ -57,7 +64,19 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/icons/24x24/undo.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Ph&#x1ee5;c h&#x1ed3;i"/>
+        <Property name="text" type="java.lang.String" value="Undo"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="Undo" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="btnRedo">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/24x24/redo.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Redo"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="Redo" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnReload">
@@ -66,6 +85,8 @@
           <Image iconType="3" name="/icons/24x24/reload.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Reload"/>
+        <Property name="name" type="java.lang.String" value="Reload" noResource="true"/>
+        <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btnExportFile">
@@ -74,6 +95,7 @@
           <Image iconType="3" name="/icons/24x24/export.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Xu&#x1ea5;t file"/>
+        <Property name="name" type="java.lang.String" value="Export file" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

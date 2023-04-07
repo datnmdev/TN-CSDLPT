@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class BoDeService {
     
-    public List<BoDe> getAllQuestions() throws SQLException {
-        return toBoDe(new BoDeRepository().findAll());
+    public List<Object> getAllQuestions() throws SQLException {
+        return new BoDeRepository().findAll();
     }
     
     public List<String> getLevelList() throws SQLException {

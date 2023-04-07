@@ -76,14 +76,13 @@ public class FrmMain extends javax.swing.JFrame {
                     tabbedPaneWorkspace.setSelectedIndex(tabIndex);
                 } else {
                     try {
-                        PnlWorkSection pnlWorkSection = new PnlWorkSection(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        PnlWorkSection pnlWorkSection = new PnlWorkSection(_this, tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
                         tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
                         tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount()-1, tabName);
                         BoDeController.renderData(_this, pnlWorkSection);
                     } catch (IOException ex) {
                         MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
                     }
-                    
                 }
             }
         });

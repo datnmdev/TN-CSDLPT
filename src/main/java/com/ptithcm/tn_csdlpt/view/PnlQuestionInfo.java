@@ -5,7 +5,12 @@
 package com.ptithcm.tn_csdlpt.view;
 
 import com.ptithcm.tn_csdlpt.entity.BoDe;
+import com.ptithcm.tn_csdlpt.entity.GiaoVien;
 import com.ptithcm.tn_csdlpt.entity.MonHoc;
+import com.ptithcm.tn_csdlpt.service.Identify;
+import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
+import com.ptithcm.tn_csdlpt.service.GiaoVienService;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -236,14 +241,28 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 //    Methods
-    public BoDe getQuestionData() {
-        return new BoDe(
-                Integer.valueOf(txtQuestionId.getText()), String.valueOf(cboSubject.getSelectedItem()), 
-                String.valueOf(cboLevel.getSelectedItem()), txtAreaContent.getText(), 
-                txtAreaQuestionA.getText(), txtAreaQuestionB.getText(), 
-                txtAreaQuestionC.getText(), txtAreaQuestionD.getText(), 
-                String.valueOf(cboAnswer.getSelectedItem()), txtTeacherCode.getText()
-        );
+    public BoDe getQuestionData(String btnName, List<ObjectAction> objectActions) {
+        BoDe question;
+        switch (btnName) {
+            case "Add":
+                question = new BoDe(
+                        Identify.questionId(objectActions), String.valueOf(((MonHoc) cboSubject.getSelectedItem()).getMaMH()), 
+                    String.valueOf(cboLevel.getSelectedItem()), txtAreaContent.getText(), 
+                    txtAreaQuestionA.getText(), txtAreaQuestionB.getText(), 
+                    txtAreaQuestionC.getText(), txtAreaQuestionD.getText(), 
+                    String.valueOf(cboAnswer.getSelectedItem()), txtTeacherCode.getText().split(" - ")[0]
+                );
+                break;
+            default:
+                question = new BoDe(
+                    Integer.parseInt(txtQuestionId.getText()), String.valueOf(((MonHoc) cboSubject.getSelectedItem()).getMaMH()), 
+                    String.valueOf(cboLevel.getSelectedItem()), txtAreaContent.getText(), 
+                    txtAreaQuestionA.getText(), txtAreaQuestionB.getText(), 
+                    txtAreaQuestionC.getText(), txtAreaQuestionD.getText(), 
+                    String.valueOf(cboAnswer.getSelectedItem()), txtTeacherCode.getText().split(" - ")[0]
+                );
+        }
+        return question;
     }
     
     public void fillSubjectComboBox(List<MonHoc> subjects) {
@@ -271,16 +290,16 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         }
     }
     
-    public void reset() {
-        txtQuestionId.setText("");
-        cboSubject.removeAllItems();
-        cboLevel.removeAllItems();
+    public void reset(List<ObjectAction> objectActions) {
+        txtQuestionId.setText(String.valueOf(Identify.questionId(objectActions)));
+        cboSubject.setSelectedIndex(0);
+        cboLevel.setSelectedIndex(0);
         txtAreaContent.setText("");
         txtAreaQuestionA.setText("");
         txtAreaQuestionB.setText("");
         txtAreaQuestionC.setText("");
         txtAreaQuestionD.setText("");
-        txtTeacherCode.setText("");
+        cboAnswer.setSelectedIndex(0);
     }
     
 //    Getters and setters

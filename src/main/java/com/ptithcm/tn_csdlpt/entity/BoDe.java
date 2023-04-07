@@ -9,7 +9,7 @@ package com.ptithcm.tn_csdlpt.entity;
  * @author MINHDAT
  */
 public class BoDe {
-    private int cauHoi;
+    private Integer cauHoi;
     private String maMH;
     private String trinhDo;
     private String noiDung;
@@ -22,6 +22,18 @@ public class BoDe {
     
 //    Constructors
     public BoDe() {
+    }
+
+    public BoDe(String maMH, String trinhDo, String noiDung, String a, String b, String c, String d, String dapAn, String maGV) {
+        this.maMH = maMH;
+        this.trinhDo = trinhDo;
+        this.noiDung = noiDung;
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+        this.dapAn = dapAn;
+        this.maGV = maGV;
     }
 
     public BoDe(int cauHoi, String maMH, String trinhDo, String noiDung, String a, String b, String c, String d, String dapAn, String maGV) {
@@ -42,7 +54,7 @@ public class BoDe {
         return cauHoi;
     }
 
-    public void setCauHoi(int cauHoi) {
+    public void setCauHoi(Integer cauHoi) {
         this.cauHoi = cauHoi;
     }
 

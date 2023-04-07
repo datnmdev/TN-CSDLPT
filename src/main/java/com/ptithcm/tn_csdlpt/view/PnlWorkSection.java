@@ -8,11 +8,15 @@ import com.ptithcm.tn_csdlpt.entity.BoDe;
 import com.ptithcm.tn_csdlpt.entity.GiaoVien;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.global_variable.SubscribersVariables;
+import com.ptithcm.tn_csdlpt.model.dto.ActionStatusEnum;
+import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
+import com.ptithcm.tn_csdlpt.service.UndoRedo;
 import com.ptithcm.tn_csdlpt.service.GiaoVienService;
 import com.ptithcm.tn_csdlpt.service.SubscriberService;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -21,22 +25,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author MINHDAT
  */
 public class PnlWorkSection extends javax.swing.JPanel {
-    private List<BoDe> questions;
+//    Các đối tượng dữ liệu dùng chung
+    private FrmMain frmMain;
+    private String tabName;
     private PnlManageBar pnlManageBar;
-    private PnlQuestionInfo pnlQuestionInfo;
+    private List<ObjectAction> objectActions;
+    private UndoRedo undoRedo;
+    private JPanel pnlObjectInfo;
 
     /**
      * Creates new form pnlWorkSection
      */
-    public PnlWorkSection(String tabName, String groupName) throws IOException {
+    public PnlWorkSection(FrmMain frmMain, String tabName, String groupName) throws IOException {
+        initProperties(frmMain, tabName);
         initComponents();
         initMyComponents(tabName);
         disableComponents(groupName);
@@ -115,32 +127,121 @@ public class PnlWorkSection extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+//    Sự kiện con cuộn bảng
+    public void scrollRectToVisible(int index) {
+        Rectangle cellRect = tblData.getCellRect(index, 0, true);
+        Rectangle visibleRect = tblData.getVisibleRect();
+        visibleRect.y = cellRect.y;
+        visibleRect.height = cellRect.height;
+        tblData.scrollRectToVisible(visibleRect);;
+    }
+
+//    Thực thi các thao tác với các đối tượng được đưa vào undo, redo
+    public void objectActionExecute(ObjectAction objectAction, Object[] row) {
+        DefaultTableModel tblDataModel = (DefaultTableModel) tblData.getModel();
+        switch (objectAction.getStatus().get(0)) {
+            case INSERT:
+//                        Cập nhật dữ liệu bộ nhớ tạm
+                objectActions.get(objectAction.getListIndex()).getStatus().add(ActionStatusEnum.INSERT);
+
+//                        Cập nhật dữ liệu bảng
+                tblDataModel.insertRow(objectAction.getTableIndex(), row);
+                tblDataModel.fireTableDataChanged();
+                scrollRectToVisible(objectAction.getTableIndex());
+                tblData.setRowSelectionInterval(objectAction.getTableIndex(), objectAction.getTableIndex());
+                break;
+            case UPDATE:
+//                Cập nhật lại dữ liệu cho bộ nhớ tạm
+                objectActions.get(objectAction.getListIndex()).getStatus().add(ActionStatusEnum.UPDATE);
+                List<Object> objects = new ArrayList<>();
+                objects.add(objectAction.getObjects().get(0));
+                objectActions.get(objectAction.getListIndex()).setObjects(objects);
+
+//                        Cập nhật dữ liệu bảng
+                for (int i = 0; i < tblDataModel.getColumnCount(); ++i) {
+                    tblDataModel.setValueAt(row[i], objectAction.getTableIndex(), i);
+                }
+                tblDataModel.fireTableRowsUpdated(objectAction.getTableIndex(), objectAction.getTableIndex());
+                scrollRectToVisible(objectAction.getTableIndex());
+                tblData.setRowSelectionInterval(objectAction.getTableIndex(), objectAction.getTableIndex());
+
+                break;
+            case DELETE:
+//                        Cập nhật dữ liệu bộ nhớ tạm
+                objectActions.get(objectAction.getListIndex()).getStatus().add(ActionStatusEnum.DELETE);
+
+//                        Cập nhật dữ liệu bảng
+                tblDataModel.removeRow(objectAction.getTableIndex());
+                tblDataModel.fireTableDataChanged();
+                break;
+        }
+    }
+
+//    Các sự kiện được sử lý trong tab
     public void addEvents() {
-//        tblData.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                int[] selectedRows = tblData.getSelectedRows();
-//                
-//                
-//            }
-//        });
         tblData.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
                     int selectedRow = tblData.getSelectedRow();
-                    fillQuestionInfoForm(questions.get(selectedRow));
+                    pnlManageBar.disableManageButtons("Selected row");
+                    Object question;
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            question = (BoDe) getObjectFromRow(selectedRow);
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                    if (question != null) {
+                        fillObjectInfoForm(question);
+                    }
                 } catch (SQLException ex) {
                     MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
                 }
             }
         });
-        
+
 //        Xử lý sự kiện nút add
         pnlManageBar.getBtnAdd().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+                switch (tabName) {
+                    case "Quản lý bộ đề":
+                        PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+                        BoDe question
+                                = pnlQuestionInfo.getQuestionData(pnlManageBar.getBtnAdd().getName(), objectActions);
+                        int objectActionSize = objectActions.size();
+                        DefaultTableModel tblDataModel = (DefaultTableModel) tblData.getModel();
+
+                        ObjectAction objectAction = new ObjectAction(
+                                ActionStatusEnum.INSERT, objectActionSize,
+                                tblDataModel.getRowCount(), question
+                        );
+
+//                        Thêm đối tượng vào objectActions
+                        objectActions.add(objectAction);
+
+//                        Cập nhật lại bảng
+                        Object[] row = {
+                            question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                            question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                            question.getD(), question.getDapAn(), question.getMaGV()
+                        };
+
+                        tblDataModel.addRow(row);
+                        tblDataModel.fireTableDataChanged();
+                        scrollRectToVisible(tblDataModel.getRowCount() - 1);
+                        tblData.setRowSelectionInterval(tblDataModel.getRowCount() - 1, tblDataModel.getRowCount() - 1);
+                        pnlQuestionInfo.reset(objectActions);
+
+//                        Lưu thao tác thực hiện vào stack
+                        undoRedo.execute(objectAction, objectActions);
+
+//                        Ẩn/hiện các chức năng khác
+                        pnlManageBar.disableManageButtons(pnlManageBar.getBtnAdd().getName());
+                        break;
+                }
             }
 
             @Override
@@ -157,7 +258,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnAdd().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnAdd().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -166,12 +267,62 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnAdd().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
-        
+
 //        Xử lý sự kiện nút update      
         pnlManageBar.getBtnUpdate().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+                switch (tabName) {
+                    case "Quản lý bộ đề":
+                        PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+                        BoDe question
+                                = pnlQuestionInfo.getQuestionData(pnlManageBar.getBtnUpdate().getName(), objectActions);
+
+                        int objectActionIndex = -1;
+                        for (int i = 0; i < objectActions.size(); ++i) {
+                            if (question.getCauHoi()
+                                    == ((BoDe) objectActions.get(i).getObjects().get(0)).getCauHoi()) {
+                                objectActionIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (objectActionIndex != -1) {
+                            int selectedRowIndex = tblData.getSelectedRow();
+                            ObjectAction objectAction = new ObjectAction(
+                                    ActionStatusEnum.UPDATE,
+                                    objectActionIndex, selectedRowIndex,
+                                    (BoDe) objectActions.get(objectActionIndex).getObjects().get(0)
+                            );
+
+//                        Cập nhật dữ liệu của đối tượng BoDe trong bộ nhớ tạm
+                            objectActions.get(objectActionIndex).getStatus().add(ActionStatusEnum.UPDATE);
+                            List<Object> objects = new ArrayList<>();
+                            objects.add(question);
+                            objectActions.get(objectActionIndex).setObjects(objects);
+
+//                        Cập nhật dữ liệu cho bảng
+                            DefaultTableModel tblDataModel = (DefaultTableModel) tblData.getModel();
+                            Object[] row = {
+                                question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                                question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                                question.getD(), question.getDapAn(), question.getMaGV()
+                            };
+                            for (int i = 0; i < tblDataModel.getColumnCount(); ++i) {
+                                tblDataModel.setValueAt(row[i], selectedRowIndex, i);
+                            }
+                            tblDataModel.fireTableRowsUpdated(selectedRowIndex, selectedRowIndex);
+                            scrollRectToVisible(selectedRowIndex);
+                            tblData.setRowSelectionInterval(selectedRowIndex, selectedRowIndex);
+
+//                        Lưu thay đổi vào stack
+                            undoRedo.execute(objectAction, objectActions);
+
+//                        Ẩn/hiện các nút chức năng
+                            pnlManageBar.disableManageButtons(pnlManageBar.getBtnUpdate().getName());
+                        }
+                        break;
+                }
             }
 
             @Override
@@ -188,7 +339,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnUpdate().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnUpdate().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -197,12 +348,50 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnUpdate().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
-        
+
 //        Xử lý sự kiện nút delete      
         pnlManageBar.getBtnDelete().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+                switch (tabName) {
+                    case "Quản lý bộ đề":
+                        PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+                        BoDe question
+                                = pnlQuestionInfo.getQuestionData(pnlManageBar.getBtnDelete().getName(), objectActions);
+
+                        int objectActionIndex = -1;
+                        for (int i = 0; i < objectActions.size(); ++i) {
+                            if (question.getCauHoi()
+                                    == ((BoDe) objectActions.get(i).getObjects().get(0)).getCauHoi()) {
+                                objectActionIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (objectActionIndex != -1) {
+                            int selectedRowIndex = tblData.getSelectedRow();
+                            ObjectAction objectAction = new ObjectAction(
+                                    ActionStatusEnum.DELETE,
+                                    objectActionIndex, selectedRowIndex, question
+                            );
+
+//                        Chuyển đối trạng thái thao tác với đối tượng BoDe trong bộ nhớ tạm
+                            objectActions.get(objectActionIndex).getStatus().add(ActionStatusEnum.DELETE);
+
+//                        Cập nhật dữ liệu cho bảng
+                            DefaultTableModel tblDataModel = (DefaultTableModel) tblData.getModel();
+                            tblDataModel.removeRow(selectedRowIndex);
+                            tblDataModel.fireTableDataChanged();
+
+//                        Lưu thay đổi vào stack
+                            undoRedo.execute(objectAction, objectActions);
+
+//                        Ẩn/hiện các nút chức năng
+                            pnlManageBar.disableManageButtons(pnlManageBar.getBtnDelete().getName());
+
+                        }
+                        break;
+                }
             }
 
             @Override
@@ -219,7 +408,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnDelete().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnDelete().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -228,12 +417,12 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnDelete().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
-        
+
 //        Xử lý sự kiện nút save      
         pnlManageBar.getBtnSave().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+
             }
 
             @Override
@@ -250,7 +439,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnSave().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnSave().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -258,13 +447,28 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnSave().setForeground(Color.RED);
                 pnlManageBar.getBtnSave().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-        });      
-        
+        });
+
 //        Xử lý sự kiện nút undo  
         pnlManageBar.getBtnUndo().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+                if (!undoRedo.getUndoStack().isEmpty()) {
+                    ObjectAction objectActionUndo = undoRedo.undo();
+                    BoDe question = (BoDe) objectActionUndo.getObjects().get(0);
+                    Object[] row = {
+                        question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                        question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                        question.getD(), question.getDapAn(), question.getMaGV()
+                    };
+                    objectActionExecute(objectActionUndo, row);
+
+                    pnlManageBar.disableManageButtons(pnlManageBar.getBtnUndo().getName());
+
+                    if (undoRedo.getUndoStack().isEmpty()) {
+                        pnlManageBar.getBtnUndo().setEnabled(false);
+                    }
+                }
             }
 
             @Override
@@ -281,7 +485,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnUndo().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnUndo().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -290,12 +494,58 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnUndo().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
         });
-        
+
+//        Xử lý sự kiện nút redo  
+        pnlManageBar.getBtnRedo().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!undoRedo.getRedoStack().isEmpty()) {
+                    ObjectAction objectActionRedo = undoRedo.redo();
+                    BoDe question = (BoDe) objectActionRedo.getObjects().get(0);
+                    Object[] row = {
+                        question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                        question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                        question.getD(), question.getDapAn(), question.getMaGV()
+                    };
+                    objectActionExecute(objectActionRedo, row);
+
+                    pnlManageBar.disableManageButtons(pnlManageBar.getBtnRedo().getName());
+
+                    if (undoRedo.getRedoStack().isEmpty()) {
+                        pnlManageBar.getBtnRedo().setEnabled(false);
+                    }
+                }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                pnlManageBar.getBtnRedo().setFont(new Font("Segoe UI", 1, 12));
+                pnlManageBar.getBtnRedo().setForeground(Color.RED);
+                pnlManageBar.getBtnRedo().setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                pnlManageBar.getBtnRedo().setFont(new Font("Segoe UI", 0, 12));
+                pnlManageBar.getBtnRedo().setForeground(Color.BLACK);
+                pnlManageBar.getBtnRedo().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
+        pnlManageBar.getBtnRedo().addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                pnlManageBar.getBtnRedo().setFont(new Font("Segoe UI", 1, 12));
+                pnlManageBar.getBtnRedo().setForeground(Color.RED);
+                pnlManageBar.getBtnRedo().setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        });
+
 //        Xử lý sự kiện nút reload  
         pnlManageBar.getBtnReload().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+
             }
 
             @Override
@@ -312,7 +562,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnReload().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnReload().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -322,11 +572,13 @@ public class PnlWorkSection extends javax.swing.JPanel {
             }
         });
 
-//        Xử lý sự kiện nút export file  
+//        Xử lý sự kiện nút export file
         pnlManageBar.getBtnExportFile().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+                    ExportFileChoice exportFileChoice = new ExportFileChoice(frmMain, true, tabName, tblData);
+                    exportFileChoice.setLocationRelativeTo(null);
+                    exportFileChoice.setVisible(true);
             }
 
             @Override
@@ -343,7 +595,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 pnlManageBar.getBtnExportFile().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         pnlManageBar.getBtnExportFile().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -353,8 +605,14 @@ public class PnlWorkSection extends javax.swing.JPanel {
             }
         });
     }
-    
+
 //    Methods
+    public void initProperties(FrmMain frmMain, String tabName) {
+        this.frmMain = frmMain;
+        this.tabName = tabName;
+        undoRedo = new UndoRedo();
+    }
+
     public void initMyComponents(String tabName) {
         pnlManageBarContainer.add((pnlManageBar = new PnlManageBar()));
         switch (tabName) {
@@ -362,21 +620,21 @@ public class PnlWorkSection extends javax.swing.JPanel {
 //                Cập nhật thông tin cột dữ liệu
                 DefaultTableModel model = new DefaultTableModel();
                 String[] columns = {
-                    "Id câu hỏi", "Mã môn học", "Trình độ", "Nội dung", 
+                    "Id câu hỏi", "Mã môn học", "Trình độ", "Nội dung",
                     "A", "B", "C", "D", "Đáp án", "Giáo viên soạn"
                 };
                 for (String column : columns) {
                     model.addColumn(column);
                 }
                 tblData.setModel(model);
-                
+
 //                Thêm form thao tác nhập liệu tương ứng
-                pnlDataEntryFormContainer.add((pnlQuestionInfo = new PnlQuestionInfo()));
+                pnlDataEntryFormContainer.add((pnlObjectInfo = new PnlQuestionInfo()));
                 break;
-            
+
         }
     }
-    
+
     public void disableComponents(String groupName) {
         switch (groupName) {
             case "TRUONG":
@@ -390,7 +648,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
                 cboSide.setEnabled(false);
         }
     }
-    
+
     public void fillSideComboBox(String groupName) throws IOException {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         switch (groupName) {
@@ -402,46 +660,91 @@ public class PnlWorkSection extends javax.swing.JPanel {
         }
         cboSide.setModel(model);
     }
-    
-    public void fillDataTable(List<BoDe> questions) {
+
+    public void fillDataTable(List<ObjectAction> objectActions) {
         DefaultTableModel dataModel = (DefaultTableModel) tblData.getModel();
         dataModel.setRowCount(0);
-        for (BoDe question : questions) {
-            List<String> row = new ArrayList<>();
-            row.add(String.valueOf(question.getCauHoi()));
-            row.add(question.getMaMH());
-            row.add(question.getTrinhDo());
-            row.add(question.getNoiDung());
-            row.add(question.getA());
-            row.add(question.getB());
-            row.add(question.getC());
-            row.add(question.getD());
-            row.add(question.getDapAn());
-            row.add(question.getMaGV());
-            dataModel.addRow(row.toArray());
+        switch (tabName) {
+            case "Quản lý bộ đề":
+                for (ObjectAction objectAction : objectActions) {
+                    List<String> row = new ArrayList<>();
+                    row.add(String.valueOf(((BoDe) objectAction.getObjects().get(0)).getCauHoi()));
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getMaMH());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getTrinhDo());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getNoiDung());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getA());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getB());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getC());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getD());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getDapAn());
+                    row.add(((BoDe) objectAction.getObjects().get(0)).getMaGV());
+                    dataModel.addRow(row.toArray());
+                }
+                break;
+            default:
+                throw new AssertionError();
         }
     }
-    
-    public void fillQuestionInfoForm(BoDe question) throws SQLException {
-        pnlQuestionInfo.getTxtQuestionId().setText(String.valueOf(question.getCauHoi()));
-        pnlQuestionInfo.setSelectedSubjectItem(question.getMaMH());
-        pnlQuestionInfo.getCboLevel().setSelectedItem(question.getTrinhDo());
-        pnlQuestionInfo.getTxtAreaContent().setText(question.getNoiDung());
-        pnlQuestionInfo.getTxtAreaQuestionA().setText(question.getA());
-        pnlQuestionInfo.getTxtAreaQuestionB().setText(question.getB());
-        pnlQuestionInfo.getTxtAreaQuestionC().setText(question.getC());
-        pnlQuestionInfo.getTxtAreaQuestionD().setText(question.getD());
-        pnlQuestionInfo.getCboAnswer().setSelectedItem(question.getDapAn());
-        GiaoVien teacher = new GiaoVienService().getTeacher(question.getMaGV());
-        if (teacher != null) {
-            pnlQuestionInfo.getTxtTeacherInfo().setText(teacher.toString());
-        } else {
-            pnlQuestionInfo.getTxtTeacherInfo().setText(question.getMaGV());
+
+    public void fillObjectInfoForm(Object object) throws SQLException {
+        switch (tabName) {
+            case "Quản lý bộ đề":
+                PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+                BoDe question = (BoDe) object;
+                pnlQuestionInfo.getTxtQuestionId().setText(String.valueOf(question.getCauHoi()));
+                pnlQuestionInfo.setSelectedSubjectItem(question.getMaMH());
+                pnlQuestionInfo.getCboLevel().setSelectedItem(question.getTrinhDo());
+                pnlQuestionInfo.getTxtAreaContent().setText(question.getNoiDung());
+                pnlQuestionInfo.getTxtAreaQuestionA().setText(question.getA());
+                pnlQuestionInfo.getTxtAreaQuestionB().setText(question.getB());
+                pnlQuestionInfo.getTxtAreaQuestionC().setText(question.getC());
+                pnlQuestionInfo.getTxtAreaQuestionD().setText(question.getD());
+                pnlQuestionInfo.getCboAnswer().setSelectedItem(question.getDapAn());
+                GiaoVien teacher = new GiaoVienService().getTeacher(question.getMaGV());
+                if (teacher != null) {
+                    pnlQuestionInfo.getTxtTeacherInfo().setText(teacher.toString());
+                } else {
+                    pnlQuestionInfo.getTxtTeacherInfo().setText(question.getMaGV());
+                }
+                break;
+            default:
+                throw new AssertionError();
         }
-        
     }
-    
+
+    public Object getObjectFromRow(int rowIndex) {
+        Object object;
+        TableModel model = tblData.getModel();
+        switch (tabName) {
+            case "Quản lý bộ đề":
+                object = new BoDe(
+                        Integer.parseInt(model.getValueAt(rowIndex, 0).toString()),
+                        model.getValueAt(rowIndex, 1).toString(),
+                        model.getValueAt(rowIndex, 2).toString(),
+                        model.getValueAt(rowIndex, 3).toString(),
+                        model.getValueAt(rowIndex, 4).toString(),
+                        model.getValueAt(rowIndex, 5).toString(),
+                        model.getValueAt(rowIndex, 6).toString(),
+                        model.getValueAt(rowIndex, 7).toString(),
+                        model.getValueAt(rowIndex, 8).toString(),
+                        model.getValueAt(rowIndex, 9).toString()
+                );
+                break;
+            default:
+                object = null;
+        }
+        return object;
+    }
+
 //    Getters and setters
+    public String getTabName() {
+        return tabName;
+    }
+
+    public void setTabName(String tabName) {
+        this.tabName = tabName;
+    }
+
     public PnlManageBar getPnlManageBar() {
         return pnlManageBar;
     }
@@ -450,28 +753,39 @@ public class PnlWorkSection extends javax.swing.JPanel {
         this.pnlManageBar = pnlManageBar;
     }
 
-    public PnlQuestionInfo getPnlQuestionInfo() {
-        return pnlQuestionInfo;
+    public List<ObjectAction> getObjectActions() {
+        return objectActions;
     }
 
-    public void setPnlQuestionInfo(PnlQuestionInfo pnlQuestionInfo) {
-        this.pnlQuestionInfo = pnlQuestionInfo;
+    public void setObjectActions(List<Object> objects) {
+        objectActions = new ArrayList<>();
+        for (int i = 0; i < objects.size(); ++i) {
+            objectActions.add(new ObjectAction(i, objects.get(i)));
+        }
     }
 
-    public DefaultTableModel getDataModel() {
-        return (DefaultTableModel) tblData.getModel();
+    public UndoRedo getUndoRedo() {
+        return undoRedo;
     }
 
-    public void setDataModel(DefaultTableModel dataModel) {
-        tblData.setModel(dataModel);
+    public void setUndoRedo(UndoRedo undoRedo) {
+        this.undoRedo = undoRedo;
     }
 
-    public DefaultComboBoxModel getCboSideModel() {
-        return (DefaultComboBoxModel) cboSide.getModel();
+    public JPanel getPnlObjectInfo() {
+        return pnlObjectInfo;
     }
 
-    public void setCboSideModel(DefaultComboBoxModel cboSideModel) {
-        cboSide.setModel(cboSideModel);
+    public void setPnlObjectInfo(JPanel pnlObjectInfo) {
+        this.pnlObjectInfo = pnlObjectInfo;
+    }
+
+    public JComboBox<String> getCboSide() {
+        return cboSide;
+    }
+
+    public void setCboSide(JComboBox<String> cboSide) {
+        this.cboSide = cboSide;
     }
 
     public JTable getTblData() {
@@ -482,14 +796,6 @@ public class PnlWorkSection extends javax.swing.JPanel {
         this.tblData = tblData;
     }
 
-    public List<BoDe> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<BoDe> questions) {
-        this.questions = questions;
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboSide;
     private javax.swing.JPanel jPanel2;
