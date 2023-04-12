@@ -5,6 +5,7 @@
 package com.ptithcm.tn_csdlpt.view;
 
 import java.awt.Component;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,5 +27,10 @@ public class MessageBox {
     
     public static void showInformationBox(String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void showConfirmSuccessBox(String title, String message) {
+        ImageIcon imageIcon = new ImageIcon(MessageBox.class.getResource("/icons/32x32/success.png").getPath());
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.OK_OPTION, imageIcon);
     }
 }

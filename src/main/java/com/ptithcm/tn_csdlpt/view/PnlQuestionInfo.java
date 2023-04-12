@@ -5,12 +5,9 @@
 package com.ptithcm.tn_csdlpt.view;
 
 import com.ptithcm.tn_csdlpt.entity.BoDe;
-import com.ptithcm.tn_csdlpt.entity.GiaoVien;
 import com.ptithcm.tn_csdlpt.entity.MonHoc;
-import com.ptithcm.tn_csdlpt.service.Identify;
 import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
-import com.ptithcm.tn_csdlpt.service.GiaoVienService;
-import java.sql.SQLException;
+import java.awt.Cursor;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -22,11 +19,13 @@ import javax.swing.JTextField;
  * @author MINHDAT
  */
 public class PnlQuestionInfo extends javax.swing.JPanel {
-
+    private int idCauHoi;
+    
     /**
      * Creates new form PnlQuestionInfo
      */
     public PnlQuestionInfo() {
+        this.idCauHoi = 0;
         initComponents();
     }
 
@@ -40,6 +39,7 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        btnResetForm = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
@@ -69,9 +69,33 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         txtQuestionId = new javax.swing.JTextField();
 
+        setPreferredSize(new java.awt.Dimension(400, 624));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setLayout(new java.awt.CardLayout());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnResetForm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/24x24/reset.png"))); // NOI18N
+        btnResetForm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnResetFormMouseClicked(evt);
+            }
+        });
+        btnResetForm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnResetForm.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnResetForm.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
+        btnResetForm.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnResetForm.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        });
+        jPanel1.add(btnResetForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 0, 30, 40));
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -80,9 +104,11 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         jLabel1.setText("Thông tin câu hỏi thi");
         jLabel1.setOpaque(true);
         jLabel1.setPreferredSize(new java.awt.Dimension(110, 40));
-        jPanel1.add(jLabel1, "card2");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, -1));
 
         add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(400, 582));
 
         jLabel2.setText("Môn học:");
 
@@ -139,6 +165,7 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         jLabel11.setText("Id câu hỏi:");
 
         txtQuestionId.setEditable(false);
+        txtQuestionId.setText("-1");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -146,48 +173,48 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboSubject, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboLevel, 0, 293, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTeacherCode))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane6))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cboAnswer, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane6))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboSubject, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTeacherCode))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtQuestionId)))
-                .addContainerGap())
+                        .addComponent(txtQuestionId, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,13 +267,17 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnResetFormMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnResetFormMouseClicked
+        reset();
+    }//GEN-LAST:event_btnResetFormMouseClicked
+
 //    Methods
     public BoDe getQuestionData(String btnName, List<ObjectAction> objectActions) {
         BoDe question;
         switch (btnName) {
             case "Add":
                 question = new BoDe(
-                        Identify.questionId(objectActions), String.valueOf(((MonHoc) cboSubject.getSelectedItem()).getMaMH()), 
+                        idCauHoi = idCauHoi-1, String.valueOf(((MonHoc) cboSubject.getSelectedItem()).getMaMH()), 
                     String.valueOf(cboLevel.getSelectedItem()), txtAreaContent.getText(), 
                     txtAreaQuestionA.getText(), txtAreaQuestionB.getText(), 
                     txtAreaQuestionC.getText(), txtAreaQuestionD.getText(), 
@@ -290,8 +321,8 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
         }
     }
     
-    public void reset(List<ObjectAction> objectActions) {
-        txtQuestionId.setText(String.valueOf(Identify.questionId(objectActions)));
+    public void reset() {
+        txtQuestionId.setText(String.valueOf(idCauHoi-1));
         cboSubject.setSelectedIndex(0);
         cboLevel.setSelectedIndex(0);
         txtAreaContent.setText("");
@@ -384,6 +415,7 @@ public class PnlQuestionInfo extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnResetForm;
     private javax.swing.JComboBox<String> cboAnswer;
     private javax.swing.JComboBox<String> cboLevel;
     private javax.swing.JComboBox<String> cboSubject;

@@ -4,10 +4,13 @@
  */
 package com.ptithcm.tn_csdlpt.repository;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
+import java.sql.SQLException;
+
 /**
  *
  * @author MINHDAT
  */
-public interface DeleteDataRepositoryInterface {
-    
+public interface SaveDataRepositoryInterface {
+    public abstract void saveAll(SQLServerDataTable sqlServerDataTable) throws SQLException;
 }

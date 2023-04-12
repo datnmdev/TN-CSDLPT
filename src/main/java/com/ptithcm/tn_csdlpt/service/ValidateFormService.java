@@ -13,7 +13,7 @@ import com.ptithcm.tn_csdlpt.view.PnlQuestionInfo;
  * @author MINHDAT
  */
 public class ValidateFormService {
-    public void validateFrmLogin(FrmLogin frmLogin) throws InvalidInputException {
+    public static void validateFrmLogin(FrmLogin frmLogin) throws InvalidInputException {
         if (frmLogin.getTxtLoginName().getText().isEmpty()) {
             throw new InvalidInputException("Vui lòng nhập tên đăng nhập!");
         } else if (String.valueOf(frmLogin.getTxtPassword().getPassword()).isEmpty()) {
@@ -21,7 +21,7 @@ public class ValidateFormService {
         }
     }
     
-    public void validateFrmQuestionInfo(PnlQuestionInfo pnlQuestionInfo) throws InvalidInputException {
+    public static void validateFrmQuestionInfo(PnlQuestionInfo pnlQuestionInfo) throws InvalidInputException {
         if (pnlQuestionInfo.getTxtAreaContent().getText().equals("")) {
             throw new InvalidInputException("Nội dung câu hỏi không được bỏ trống!");
         } else if (pnlQuestionInfo.getTxtAreaQuestionA().getText().equals("")) {
@@ -32,6 +32,13 @@ public class ValidateFormService {
             throw new InvalidInputException("Nội dung câu C không được bỏ trống!");
         } else if (pnlQuestionInfo.getTxtAreaQuestionA().getText().equals("")) {
             throw new InvalidInputException("Nội dung câu D không được bỏ trống!");
+        } else if (pnlQuestionInfo.getTxtAreaQuestionA().getText().equals(pnlQuestionInfo.getTxtAreaQuestionB().getText()) || 
+                pnlQuestionInfo.getTxtAreaQuestionA().getText().equals(pnlQuestionInfo.getTxtAreaQuestionC().getText()) || 
+                pnlQuestionInfo.getTxtAreaQuestionA().getText().equals(pnlQuestionInfo.getTxtAreaQuestionD().getText()) || 
+                pnlQuestionInfo.getTxtAreaQuestionB().getText().equals(pnlQuestionInfo.getTxtAreaQuestionC().getText()) || 
+                pnlQuestionInfo.getTxtAreaQuestionB().getText().equals(pnlQuestionInfo.getTxtAreaQuestionD().getText()) || 
+                pnlQuestionInfo.getTxtAreaQuestionC().getText().equals(pnlQuestionInfo.getTxtAreaQuestionD().getText())) {
+            throw new InvalidInputException("Các đáp án A, B, C, D không được trùng nhau!");
         }
     }
 }

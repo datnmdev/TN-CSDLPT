@@ -52,6 +52,24 @@ public class ObjectAction {
         this.objects.addAll(objectAction.getObjects());
     }
     
+    public String getSQLAction() {
+        String action;
+        if (status.get(0).equals(ActionStatusEnum.NO_ACTION)) {
+            ActionStatusEnum lastStatus = status.get(status.size()-1);
+            switch (lastStatus) {
+                case NO_ACTION:
+                case INSERT:
+                    action = ActionStatusEnum.NO_ACTION.getName();
+                    break;
+                default:
+                    action = lastStatus.getName();
+            }
+        } else {
+            action = ActionStatusEnum.INSERT.getName();
+        }
+        return action;
+    }
+    
 //    Getters and setters
     public List<ActionStatusEnum> getStatus() {
         return status;

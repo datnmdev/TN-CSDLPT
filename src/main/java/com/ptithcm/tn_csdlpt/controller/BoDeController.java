@@ -4,13 +4,16 @@
  */
 package com.ptithcm.tn_csdlpt.controller;
 
+import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
 import com.ptithcm.tn_csdlpt.service.BoDeService;
 import com.ptithcm.tn_csdlpt.service.MonHocService;
 import com.ptithcm.tn_csdlpt.view.FrmMain;
 import com.ptithcm.tn_csdlpt.view.MessageBox;
 import com.ptithcm.tn_csdlpt.view.PnlQuestionInfo;
 import com.ptithcm.tn_csdlpt.view.PnlWorkSection;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -28,5 +31,8 @@ public class BoDeController {
         }
     }
     
-    
+    public static void save(List<ObjectAction> objectActions) {
+//        Tạo array để truyền cho tham số tương ứng của sp
+//        Array array = 
+    }
 }

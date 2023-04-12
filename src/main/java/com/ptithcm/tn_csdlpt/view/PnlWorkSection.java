@@ -4,15 +4,19 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import com.ptithcm.tn_csdlpt.controller.BoDeController;
 import com.ptithcm.tn_csdlpt.entity.BoDe;
 import com.ptithcm.tn_csdlpt.entity.GiaoVien;
+import com.ptithcm.tn_csdlpt.exception.InvalidInputException;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.global_variable.SubscribersVariables;
 import com.ptithcm.tn_csdlpt.model.dto.ActionStatusEnum;
 import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
+import com.ptithcm.tn_csdlpt.service.BoDeService;
 import com.ptithcm.tn_csdlpt.service.UndoRedo;
 import com.ptithcm.tn_csdlpt.service.GiaoVienService;
 import com.ptithcm.tn_csdlpt.service.SubscriberService;
+import com.ptithcm.tn_csdlpt.service.ValidateFormService;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -37,12 +41,14 @@ import javax.swing.table.TableModel;
  */
 public class PnlWorkSection extends javax.swing.JPanel {
 //    Các đối tượng dữ liệu dùng chung
+
     private FrmMain frmMain;
     private String tabName;
     private PnlManageBar pnlManageBar;
     private List<ObjectAction> objectActions;
     private UndoRedo undoRedo;
     private JPanel pnlObjectInfo;
+    private PnlWorkSection _this;
 
     /**
      * Creates new form pnlWorkSection
@@ -208,7 +214,14 @@ public class PnlWorkSection extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 switch (tabName) {
                     case "Quản lý bộ đề":
+                        try {
+//                        Đối tượng lấy thông tin
                         PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+
+//                        Validate form 
+                        ValidateFormService.validateFrmQuestionInfo(pnlQuestionInfo);
+
+//                        Xử lý dữ liệu và thực hiện thao tác thêm
                         BoDe question
                                 = pnlQuestionInfo.getQuestionData(pnlManageBar.getBtnAdd().getName(), objectActions);
                         int objectActionSize = objectActions.size();
@@ -233,14 +246,16 @@ public class PnlWorkSection extends javax.swing.JPanel {
                         tblDataModel.fireTableDataChanged();
                         scrollRectToVisible(tblDataModel.getRowCount() - 1);
                         tblData.setRowSelectionInterval(tblDataModel.getRowCount() - 1, tblDataModel.getRowCount() - 1);
-                        pnlQuestionInfo.reset(objectActions);
-
+                        
 //                        Lưu thao tác thực hiện vào stack
                         undoRedo.execute(objectAction, objectActions);
 
 //                        Ẩn/hiện các chức năng khác
                         pnlManageBar.disableManageButtons(pnlManageBar.getBtnAdd().getName());
                         break;
+                    } catch (InvalidInputException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    }
                 }
             }
 
@@ -274,7 +289,14 @@ public class PnlWorkSection extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 switch (tabName) {
                     case "Quản lý bộ đề":
+                        try {
+//                        Đối tượng lấy dữ liệu
                         PnlQuestionInfo pnlQuestionInfo = (PnlQuestionInfo) pnlObjectInfo;
+
+//                        Validate form
+                        ValidateFormService.validateFrmQuestionInfo(pnlQuestionInfo);
+
+//                        Xử lý dữ liệu và thực hiện thao tác cập nhật
                         BoDe question
                                 = pnlQuestionInfo.getQuestionData(pnlManageBar.getBtnUpdate().getName(), objectActions);
 
@@ -322,6 +344,9 @@ public class PnlWorkSection extends javax.swing.JPanel {
                             pnlManageBar.disableManageButtons(pnlManageBar.getBtnUpdate().getName());
                         }
                         break;
+                    } catch (InvalidInputException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    }
                 }
             }
 
@@ -422,7 +447,42 @@ public class PnlWorkSection extends javax.swing.JPanel {
         pnlManageBar.getBtnSave().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                try {
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+//                            Gọi lệnh save từ tầng service
+                            BoDeService.saveAll(objectActions);
+                            
+//                            Hiển thị hộp thoại thông báo khi nó ghi thành công
+                            MessageBox.showConfirmSuccessBox("Thông báo", "Ghi thành công!");
+                            
+//                            Tiến hành load lại trang sau khi ghi thành công
+                            //  Reset dữ liệu của bộ nhớ tạm, undo, redo
+                            objectActions.clear();
+                            undoRedo.reset();
+                            ((DefaultTableModel) tblData.getModel()).setRowCount(0);
 
+                            //  Load lại dữ liệu
+                            BoDeController.renderData(frmMain, _this);
+
+                            //  Reset form nhập liệu
+                            ((PnlQuestionInfo) pnlObjectInfo).reset();
+
+                            //  Reset thanh công cụ
+                            pnlManageBar.disableManageButtons(pnlManageBar.getBtnReload().getName());
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                } catch (IllegalArgumentException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                } catch (IllegalAccessException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                } catch (SQLException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                } catch (NoSuchFieldException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                }
             }
 
             @Override
@@ -455,13 +515,29 @@ public class PnlWorkSection extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (!undoRedo.getUndoStack().isEmpty()) {
                     ObjectAction objectActionUndo = undoRedo.undo();
-                    BoDe question = (BoDe) objectActionUndo.getObjects().get(0);
-                    Object[] row = {
-                        question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
-                        question.getNoiDung(), question.getA(), question.getB(), question.getC(),
-                        question.getD(), question.getDapAn(), question.getMaGV()
-                    };
+                    Object[] row;
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            BoDe question = (BoDe) objectActionUndo.getObjects().get(0);
+                            row = new Object[]{
+                                question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                                question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                                question.getD(), question.getDapAn(), question.getMaGV()
+                            };
+                            break;
+
+                        default:
+                            throw new AssertionError();
+                    }
+
                     objectActionExecute(objectActionUndo, row);
+
+//                    Hiển thị dữ liệu của row vừa undo
+                    try {
+                        fillObjectInfoForm(objectActionUndo.getObjects().get(0));
+                    } catch (SQLException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    }
 
                     pnlManageBar.disableManageButtons(pnlManageBar.getBtnUndo().getName());
 
@@ -501,13 +577,28 @@ public class PnlWorkSection extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (!undoRedo.getRedoStack().isEmpty()) {
                     ObjectAction objectActionRedo = undoRedo.redo();
-                    BoDe question = (BoDe) objectActionRedo.getObjects().get(0);
-                    Object[] row = {
-                        question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
-                        question.getNoiDung(), question.getA(), question.getB(), question.getC(),
-                        question.getD(), question.getDapAn(), question.getMaGV()
-                    };
+                    Object[] row;
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            BoDe question = (BoDe) objectActionRedo.getObjects().get(0);
+                            row = new Object[]{
+                                question.getCauHoi(), question.getMaMH(), question.getTrinhDo(),
+                                question.getNoiDung(), question.getA(), question.getB(), question.getC(),
+                                question.getD(), question.getDapAn(), question.getMaGV()
+                            };
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+
                     objectActionExecute(objectActionRedo, row);
+
+//                    Hiển thị dữ liệu của row vừa redo
+                    try {
+                        fillObjectInfoForm(objectActionRedo.getObjects().get(0));
+                    } catch (SQLException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    }
 
                     pnlManageBar.disableManageButtons(pnlManageBar.getBtnRedo().getName());
 
@@ -545,7 +636,25 @@ public class PnlWorkSection extends javax.swing.JPanel {
         pnlManageBar.getBtnReload().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+//                Reset dữ liệu của bộ nhớ tạm, undo, redo
+                objectActions.clear();
+                undoRedo.reset();
+                ((DefaultTableModel) tblData.getModel()).setRowCount(0);
 
+//                Load lại dữ liệu
+                BoDeController.renderData(frmMain, _this);
+
+//                Reset form nhập liệu
+                switch (tabName) {
+                    case "Quản lý bộ đề":
+                        ((PnlQuestionInfo) pnlObjectInfo).reset();
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
+//                Reset thanh công cụ
+                pnlManageBar.disableManageButtons(pnlManageBar.getBtnReload().getName());
             }
 
             @Override
@@ -576,9 +685,9 @@ public class PnlWorkSection extends javax.swing.JPanel {
         pnlManageBar.getBtnExportFile().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                    ExportFileChoice exportFileChoice = new ExportFileChoice(frmMain, true, tabName, tblData);
-                    exportFileChoice.setLocationRelativeTo(null);
-                    exportFileChoice.setVisible(true);
+                ExportFileChoice exportFileChoice = new ExportFileChoice(frmMain, true, tabName, tblData);
+                exportFileChoice.setLocationRelativeTo(null);
+                exportFileChoice.setVisible(true);
             }
 
             @Override
@@ -608,6 +717,7 @@ public class PnlWorkSection extends javax.swing.JPanel {
 
 //    Methods
     public void initProperties(FrmMain frmMain, String tabName) {
+        this._this = this;
         this.frmMain = frmMain;
         this.tabName = tabName;
         undoRedo = new UndoRedo();

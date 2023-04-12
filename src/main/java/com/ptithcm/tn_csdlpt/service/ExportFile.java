@@ -5,9 +5,11 @@
 package com.ptithcm.tn_csdlpt.service;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JTable;
@@ -137,15 +139,15 @@ public class ExportFile {
         }
     }
 
-    public static void exportFilePDF(String title, String author, JTable jJTable, String path) {
-        try {
+    public static void exportFilePDF(String title, String author, JTable jJTable, String path) throws FileNotFoundException, DocumentException, IOException {
+        try (FileOutputStream out = new FileOutputStream(path);) {
             DefaultTableModel tableModel = (DefaultTableModel) jJTable.getModel();
 
             // Tạo đối tượng Document
             Document document = new Document();
 
             // Lưu tài liệu PDF ra file
-            PdfWriter.getInstance(document, new FileOutputStream(path));
+            PdfWriter.getInstance(document, out);
 
             // Mở Document để bắt đầu thêm nội dung
             document.open();
@@ -174,8 +176,6 @@ public class ExportFile {
 
             // Đóng Document để kết thúc thêm nội dung
             document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

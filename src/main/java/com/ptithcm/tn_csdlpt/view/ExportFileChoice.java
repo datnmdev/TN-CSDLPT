@@ -4,6 +4,7 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import com.itextpdf.text.DocumentException;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.service.ExportFile;
 import java.awt.Color;
@@ -159,24 +160,25 @@ public class ExportFileChoice extends javax.swing.JDialog {
         btnExportWord.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String path = new FileChooser().getPathFromFileChooser("Word file", ".docx");
-                switch (tabName) {
-                    case "Quản lý bộ đề":
-                        String title = "Danh sách các câu hỏi";
-                        String info = String.format("Mã giáo viên: %s  -  Họ và tên: %s  -  Thuộc nhóm: %s",
-                                LoginVariables.databaseConnector.getAccount().getUsername(),
-                                LoginVariables.databaseConnector.getAccount().getFullName(),
-                                LoginVariables.databaseConnector.getAccount().getGroupName()
-                        );
-                        try {
+                try {
+                    String path = new FileChooser().getPathFromFileChooser("Word file", ".docx");
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            String title = "Danh sách các câu hỏi";
+                            String info = String.format("Mã giáo viên: %s  -  Họ và tên: %s  -  Thuộc nhóm: %s",
+                                    LoginVariables.databaseConnector.getAccount().getUsername(),
+                                    LoginVariables.databaseConnector.getAccount().getFullName(),
+                                    LoginVariables.databaseConnector.getAccount().getGroupName()
+                            );
                             ExportFile.exportFileWord(title, info, jTable, path);
-                        } catch (IOException ex) {
-                            Logger.getLogger(ExportFileChoice.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        break;
-
-                    default:
-                        throw new AssertionError();
+                            MessageBox.showConfirmSuccessBox("Thông báo", "Xuất file word thành công!");
+                            break;
+                            
+                        default:
+                            throw new AssertionError();
+                    }
+                } catch (IOException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
                 }
             }
 
@@ -207,18 +209,19 @@ public class ExportFileChoice extends javax.swing.JDialog {
         btnExportExcel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String path = new FileChooser().getPathFromFileChooser("Excel file", ".xlsx");
-                switch (tabName) {
-                    case "Quản lý bộ đề":
-                                try {
-                        ExportFile.exportFileExcel(jTable, path);
-                    } catch (Exception ex) {
-                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                try {
+                    String path = new FileChooser().getPathFromFileChooser("Excel file", ".xlsx");
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            ExportFile.exportFileExcel(jTable, path);
+                            MessageBox.showConfirmSuccessBox("Thông báo", "Xuất file excel thành công!");
+                            break;
+                            
+                        default:
+                            throw new AssertionError();
                     }
-                    break;
-
-                    default:
-                        throw new AssertionError();
+                } catch (Exception ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
                 }
             }
             
@@ -249,19 +252,26 @@ public class ExportFileChoice extends javax.swing.JDialog {
         btnExportPDF.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String path = new FileChooser().getPathFromFileChooser("PDF file", ".pdf");
-                switch (tabName) {
-                    case "Quản lý bộ đề":
-                        String title = "Danh sách các câu hỏi";
-                        String author = String.format("Mã giáo viên: %s  -  Họ và tên: %s  -  Thuộc nhóm: %s",
-                                LoginVariables.databaseConnector.getAccount().getUsername(),
-                                LoginVariables.databaseConnector.getAccount().getFullName(),
-                                LoginVariables.databaseConnector.getAccount().getGroupName()
-                        );
-                        ExportFile.exportFilePDF(title, author, jTable, path);
-                        break;
-                    default:
-                        throw new AssertionError();
+                try {
+                    String path = new FileChooser().getPathFromFileChooser("PDF file", ".pdf");
+                    switch (tabName) {
+                        case "Quản lý bộ đề":
+                            String title = "Danh sách các câu hỏi";
+                            String author = String.format("Mã giáo viên: %s  -  Họ và tên: %s  -  Thuộc nhóm: %s",
+                                    LoginVariables.databaseConnector.getAccount().getUsername(),
+                                    LoginVariables.databaseConnector.getAccount().getFullName(),
+                                    LoginVariables.databaseConnector.getAccount().getGroupName()
+                            );
+                            ExportFile.exportFilePDF(title, author, jTable, path);
+                            MessageBox.showConfirmSuccessBox("Thông báo", "Xuất file pdf thành công!");
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                } catch (DocumentException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                } catch (IOException ex) {
+                    MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
                 }
             }
             

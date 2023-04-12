@@ -4,11 +4,10 @@
  */
 package com.ptithcm.tn_csdlpt.repository;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-import com.ptithcm.tn_csdlpt.configuration.DatabaseConnectors;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import com.ptithcm.tn_csdlpt.entity.BoDe;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
-import static com.ptithcm.tn_csdlpt.global_variable.LoginVariables.databaseConnector;
+import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,7 +20,7 @@ import java.util.List;
  *
  * @author MINHDAT
  */
-public class BoDeRepository implements SelectDataRepositoryInterface {
+public class BoDeRepository implements SelectDataRepositoryInterface, SaveDataRepositoryInterface {
 
     @Override
     public Object find(Object object) throws SQLException {
@@ -36,7 +35,7 @@ public class BoDeRepository implements SelectDataRepositoryInterface {
     public List<Object> findAll() throws SQLException {
         String sql = "{call SP_LAYDANHSACHCAUHOI(?,?)}";
         
-        try (Connection connection = databaseConnector.getConnection();) {
+        try (Connection connection = LoginVariables.databaseConnector.getConnection();) {
             CallableStatement cstm = connection.prepareCall(sql);
             cstm.setString(1, LoginVariables.databaseConnector.getAccount().getGroupName());
             cstm.setString(2, LoginVariables.databaseConnector.getAccount().getUsername());
@@ -55,6 +54,17 @@ public class BoDeRepository implements SelectDataRepositoryInterface {
                 );
             }
             return questions;
+        }
+    }
+
+    @Override
+    public void saveAll(SQLServerDataTable sqlServerDataTable) throws SQLException {
+        String sql = "{call SP_GHIDANHSACHCAUHOI(?)}";
+        
+        try (Connection connection = LoginVariables.databaseConnector.getConnection();) {
+            CallableStatement cstm = connection.prepareCall(sql);
+            cstm.setObject(1, sqlServerDataTable);
+            cstm.execute();
         }
     }
     

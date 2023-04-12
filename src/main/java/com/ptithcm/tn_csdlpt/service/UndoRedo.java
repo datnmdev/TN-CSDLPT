@@ -85,6 +85,11 @@ public class UndoRedo {
         return null;
     }
     
+    public void reset() {
+        undoStack.clear();
+        redoStack.clear();
+    }
+    
 //    Getters and setters
     public Stack<ObjectAction> getUndoStack() {
         return undoStack;

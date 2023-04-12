@@ -11,13 +11,13 @@ package com.ptithcm.tn_csdlpt.model.dto;
 public enum ActionStatusEnum {
     INSERT("INSERT"), UPDATE("UPDATE"), DELETE("DELETE"), NO_ACTION("NO_ACTION");
     
-    private String status;
+    private String name;
 
-    private ActionStatusEnum(String status) {
-        this.status = status;
+    private ActionStatusEnum(String name) {
+        this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public String getName() {
+        return name;
     }
 }

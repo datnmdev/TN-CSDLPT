@@ -51,7 +51,7 @@ public class DatabaseConnector {
         sqlServerDataSource.setServerName(databaseInformation.getServerName());
         sqlServerDataSource.setPortNumber(databaseInformation.getPort());
         sqlServerDataSource.setDatabaseName(databaseInformation.getDatabaseName());
-        sqlServerDataSource.setEncrypt("false");
+        sqlServerDataSource.setEncrypt(false);
     }
     
     public void setDataSource(Account account) {
@@ -70,7 +70,7 @@ public class DatabaseConnector {
         sqlServerDataSource.setDatabaseName(databaseInformation.getDatabaseName());
         sqlServerDataSource.setUser(account.getLoginName());
         sqlServerDataSource.setPassword(account.getPassword());
-        sqlServerDataSource.setEncrypt("false");
+        sqlServerDataSource.setEncrypt(false);
     }
 
 //    Getters and setters
