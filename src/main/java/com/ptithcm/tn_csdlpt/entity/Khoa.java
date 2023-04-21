@@ -23,6 +23,17 @@ public class Khoa {
         this.maCS = maCS;
     }
 
+    public Khoa(String maKH, String tenKH) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+    }
+    
+    public String toString() {
+        return maKH + " - " + tenKH;
+    }
+    
+    
+
 //    Getters and setters
     public String getMaKH() {
         return maKH;

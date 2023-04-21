@@ -124,6 +124,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; gi&#x1ea3;ng vi&#xea;n" noResource="true"/>
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
@@ -138,6 +139,7 @@
                       <Image iconType="3" name="/icons/48x48/teacher.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Gi&#x1ea3;ng vi&#xea;n"/>
+                    <Property name="name" type="java.lang.String" value="getBtnTeacherManage" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -147,6 +149,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; sinh vi&#xea;n " noResource="true"/>
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
@@ -170,6 +173,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; khoa" noResource="true"/>
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
@@ -193,6 +197,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; m&#xf4;n h&#x1ecd;c" noResource="true"/>
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
@@ -233,6 +238,7 @@
                     <Property name="text" type="java.lang.String" value="B&#x1ed9; &#x111;&#x1ec1;"/>
                     <Property name="name" type="java.lang.String" value="" noResource="true"/>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                    <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>

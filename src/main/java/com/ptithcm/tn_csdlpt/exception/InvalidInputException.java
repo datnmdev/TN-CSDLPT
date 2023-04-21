@@ -8,6 +8,7 @@ package com.ptithcm.tn_csdlpt.exception;
  *
  * @author MINHDAT
  */
+
 public class InvalidInputException extends Exception {
     public InvalidInputException (String message) {
         super(message);

@@ -5,13 +5,21 @@
 package com.ptithcm.tn_csdlpt.view;
 
 import com.ptithcm.tn_csdlpt.controller.BoDeController;
+import com.ptithcm.tn_csdlpt.controller.GiangVienController;
+import com.ptithcm.tn_csdlpt.controller.KhoaController;
+import com.ptithcm.tn_csdlpt.controller.LopController;
+import com.ptithcm.tn_csdlpt.controller.MonHocController;
+import com.ptithcm.tn_csdlpt.controller.SinhVienController;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.model.dto.Account;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -19,10 +27,13 @@ import javax.swing.JFrame;
  * @author MINHDAT
  */
 public class FrmMain extends javax.swing.JFrame {
+
     private FrmMain _this = this;
     private PnlMenu pnlMenu;
     private CustomTabbedPane tabbedPaneWorkspace;
     private PnlStatusBar pnlStatusBar;
+    private PnlKhoaManager pnlKhoaManager;
+    private String makh;
 
     /**
      * Creates new form FrmMain
@@ -78,7 +89,7 @@ public class FrmMain extends javax.swing.JFrame {
                     try {
                         PnlWorkSection pnlWorkSection = new PnlWorkSection(_this, tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
                         tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
-                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount()-1, tabName);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
                         BoDeController.renderData(_this, pnlWorkSection);
                     } catch (IOException ex) {
                         MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
@@ -86,23 +97,137 @@ public class FrmMain extends javax.swing.JFrame {
                 }
             }
         });
+
+        pnlMenu.getBtnTeacherManage().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnTeacherManage().getName();
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+                    try {
+                        PnlTeacherManager pnlWorkSection = new PnlTeacherManager(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+                        GiangVienController.renderData(pnlWorkSection);
+                    } catch (IOException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
+        pnlMenu.getBtnStudentManage().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnStudentManage().getName();
+                System.out.println(tabName);
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+                    try {
+                        PnlStudentManager pnlWorkSection = new PnlStudentManager(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+                        SinhVienController.renderData(pnlWorkSection);
+                    } catch (IOException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
+        pnlMenu.getBtnSubjectManage().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnSubjectManage().getName();
+                System.out.println(tabName);
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+                    try {
+                        PnlMonHocManager pnlWorkSection = new PnlMonHocManager(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+                        MonHocController.renderData(pnlWorkSection);
+                    } catch (IOException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        
+        pnlMenu.getBtnClassroomManage().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnClassroomManage().getName();
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+                    try {
+                        pnlKhoaManager = new PnlKhoaManager(_this, tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+
+                        //hàm này dùng để bấm nút tạo tap quản lý lớp
+                        pnlKhoaManager.getPnlKhoaInfo().getBtnKhoaManager().addMouseListener(new MouseAdapter() {
+                            public void mouseClicked(MouseEvent e) {
+                                String tabName = "Quản lý lớp thuộc khoa " + makh;
+                                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                                if (tabIndex != -1) {
+                                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                                } else {
+                                    try {
+                                        PnlLopManager pnlLopManager = new PnlLopManager(tabName , LoginVariables.databaseConnector.getAccount().getGroupName(), makh);
+                                        tabbedPaneWorkspace.addTab(tabName, pnlLopManager);
+                                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+                                        LopController.renderData(pnlLopManager, makh);
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                        });
+
+                        tabbedPaneWorkspace.addTab(tabName, pnlKhoaManager);
+                        tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+                        KhoaController.renderData(pnlKhoaManager);
+                    } catch (IOException ex) {
+                        MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
     }
-    
+
     public void initMyComponents() {
 //        Khởi tạo các component
         pnlMenu = new PnlMenu();
         tabbedPaneWorkspace = new CustomTabbedPane();
         pnlStatusBar = new PnlStatusBar();
-        
+
 //        Thêm các component vừa tạo vào các vùng chứa
         pnlMenuContainer.add(pnlMenu);
         pnlWorkspaceContainer.add(tabbedPaneWorkspace);
         pnlStatusbarContainer.add(pnlStatusBar);
     }
-    
+
     //    Ẩn và hiện các chức năng ứng với các nhóm quyền tương ứng
     public void hideComponent(String groupName) {
-        switch(groupName) {
+        switch (groupName) {
             case "SINHVIEN":
                 pnlMenu.getTabManager().removeTabAt(1);
                 pnlMenu.getBtnExamCalendarRegister().setVisible(false);
@@ -125,7 +250,7 @@ public class FrmMain extends javax.swing.JFrame {
                 break;
         }
     }
-    
+
 //    Cập nhật thông tin cho thanh trạng thái khi đăng nhập thành công
     public void updateStatusBarData(Account account) {
         pnlStatusBar.getLblUsername().setText(account.getUsername());
@@ -148,7 +273,7 @@ public class FrmMain extends javax.swing.JFrame {
             }
         }.start();
     }
-    
+
 //    Getters and setters
     public PnlMenu getPnlMenu() {
         return pnlMenu;
@@ -173,7 +298,16 @@ public class FrmMain extends javax.swing.JFrame {
     public void setPnlStatusBar(PnlStatusBar pnlStatusBar) {
         this.pnlStatusBar = pnlStatusBar;
     }
-    
+
+    public String getMakh() {
+        return makh;
+    }
+
+    public void setMakh(String makh) {
+        this.makh = makh;
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pnlMenuContainer;
     private javax.swing.JPanel pnlStatusbarContainer;

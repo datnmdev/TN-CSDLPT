@@ -107,16 +107,19 @@ public class PnlMenu extends javax.swing.JPanel {
         tabManage.setLayout(flowLayout2);
 
         btnTeacherManage.setBackground(new java.awt.Color(255, 255, 255));
+        btnTeacherManage.setName("Quản lý giảng viên"); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/teacher.png"))); // NOI18N
         jLabel3.setText("Giảng viên");
+        jLabel3.setName("getBtnTeacherManage"); // NOI18N
         btnTeacherManage.add(jLabel3);
 
         tabManage.add(btnTeacherManage);
 
         btnStudentManage.setBackground(new java.awt.Color(255, 255, 255));
+        btnStudentManage.setName("Quản lý sinh viên "); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -127,6 +130,7 @@ public class PnlMenu extends javax.swing.JPanel {
         tabManage.add(btnStudentManage);
 
         btnClassroomManage.setBackground(new java.awt.Color(255, 255, 255));
+        btnClassroomManage.setName("Quản lý khoa"); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -137,6 +141,7 @@ public class PnlMenu extends javax.swing.JPanel {
         tabManage.add(btnClassroomManage);
 
         btnSubjectManage.setBackground(new java.awt.Color(255, 255, 255));
+        btnSubjectManage.setName("Quản lý môn học"); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -155,6 +160,7 @@ public class PnlMenu extends javax.swing.JPanel {
         jLabel7.setText("Bộ đề");
         jLabel7.setName(""); // NOI18N
         jLabel7.setRequestFocusEnabled(false);
+        jLabel7.setVerifyInputWhenFocusTarget(false);
         btnQuestionManage.add(jLabel7);
 
         tabManage.add(btnQuestionManage);

@@ -22,6 +22,12 @@ public class Lop {
         this.tenLop = tenLop;
         this.maKH = maKH;
     }
+    
+    
+    
+     public String toString() {
+        return maLop + " - " + tenLop;
+    }
 
 //    Getters and setters
     public String getMaLop() {

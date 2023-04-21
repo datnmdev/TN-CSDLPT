@@ -4,6 +4,9 @@
  */
 package com.ptithcm.tn_csdlpt.entity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -11,13 +14,14 @@ import java.util.Date;
  * @author MINHDAT
  */
 public class SinhVien {
+
     private String maSV;
     private String ho;
     private String ten;
     private Date ngaySinh;
     private String diaChi;
     private String maLop;
-    
+
 //    Constructors
     public SinhVien() {
     }
@@ -30,7 +34,19 @@ public class SinhVien {
         this.diaChi = diaChi;
         this.maLop = maLop;
     }
-    
+
+    public SinhVien(String maSV, String ho, String ten, String ngaySinhStr, String diaChi, String maLop) throws ParseException {
+        this.maSV = maSV;
+        this.ho = ho;
+        this.ten = ten;
+        this.diaChi = diaChi;
+        this.maLop = maLop;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date ngaySinh = dateFormat.parse(ngaySinhStr);
+        this.ngaySinh = ngaySinh;
+    }
+
 //    Getters and setters
     public String getMaSV() {
         return maSV;
@@ -60,6 +76,11 @@ public class SinhVien {
         return ngaySinh;
     }
 
+    public String getNgaySinhStr() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(ngaySinh);
+    }
+
     public void setNgaySinh(Date ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
@@ -79,5 +100,5 @@ public class SinhVien {
     public void setMaLop(String maLop) {
         this.maLop = maLop;
     }
-    
+
 }
