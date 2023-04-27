@@ -59,7 +59,7 @@ public class PnlMenu extends javax.swing.JPanel {
         btnReportMarkTable = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         btnReportExamCalendar = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
+        btnBaoCaoDangKiThi = new javax.swing.JLabel();
 
         setLayout(new java.awt.CardLayout());
 
@@ -218,12 +218,14 @@ public class PnlMenu extends javax.swing.JPanel {
         tabReport.add(btnReportMarkTable);
 
         btnReportExamCalendar.setBackground(new java.awt.Color(255, 255, 255));
+        btnReportExamCalendar.setName("Báo Cáo Danh Sách Đăng Kí Thi"); // NOI18N
+        btnReportExamCalendar.setOpaque(false);
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-register-list.png"))); // NOI18N
-        jLabel16.setText("Danh sách đăng ký thi");
-        btnReportExamCalendar.add(jLabel16);
+        btnBaoCaoDangKiThi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnBaoCaoDangKiThi.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnBaoCaoDangKiThi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/48x48/test-register-list.png"))); // NOI18N
+        btnBaoCaoDangKiThi.setText("Danh sách đăng ký thi");
+        btnReportExamCalendar.add(btnBaoCaoDangKiThi);
 
         tabReport.add(btnReportExamCalendar);
 
@@ -385,7 +387,19 @@ public class PnlMenu extends javax.swing.JPanel {
         this.tabManager = tabManager;
     }
 
+    //tạo setter nút thông báo đăng kí thi
+    public JLabel getBtnBaoCaoDangKiThi() {
+        return btnBaoCaoDangKiThi;
+    }
+
+    public void setBtnBaoCaoDangKiThi(JLabel btnBaoCaoDangKiThi) {
+        this.btnBaoCaoDangKiThi = btnBaoCaoDangKiThi;
+    }
+    
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnBaoCaoDangKiThi;
     private javax.swing.JPanel btnClassroomManage;
     private javax.swing.JPanel btnDoExam;
     private javax.swing.JPanel btnExamCalendarRegister;
@@ -402,7 +416,6 @@ public class PnlMenu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;

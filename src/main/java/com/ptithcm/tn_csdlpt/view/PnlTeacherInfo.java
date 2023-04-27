@@ -9,6 +9,7 @@ import com.ptithcm.tn_csdlpt.entity.Khoa;
 import com.ptithcm.tn_csdlpt.entity.MonHoc;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -49,6 +50,7 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
         txtTen = new javax.swing.JTextField();
         txtHo = new javax.swing.JTextField();
         comboboxKhoa = new javax.swing.JComboBox<>();
+        btnControlLogin = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -82,6 +84,8 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
             }
         });
 
+        btnControlLogin.setText("QUẢN LÝ TÀI KHOẢN");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -110,6 +114,10 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDiaChi)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(123, 123, 123)
+                .addComponent(btnControlLogin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,7 +147,9 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
                         .addGap(368, 368, 368))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(comboboxKhoa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(355, 355, 355))))
+                        .addGap(105, 105, 105)
+                        .addComponent(btnControlLogin)
+                        .addGap(227, 227, 227))))
         );
 
         jScrollPane1.setViewportView(jPanel3);
@@ -198,6 +208,16 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
         this.comboboxKhoa = comboboxKhoa;
     }
 
+    public JButton getBtnControlLogin() {
+        return btnControlLogin;
+    }
+
+    public void setBtnControlLogin(JButton btnControlLogin) {
+        this.btnControlLogin = btnControlLogin;
+    }
+    
+    
+
    
 
    
@@ -221,6 +241,7 @@ public class PnlTeacherInfo extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnControlLogin;
     private javax.swing.JComboBox<String> comboboxKhoa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e443f31d-d8bf-4fdd-8191-1b16d43ef9e7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="3"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="DaThi">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{NGAYTHI} >= new Date()]]></conditionExpression>
+			<style forecolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="3ca718ae-1d4d-49f8-a052-588c2697d1f6">
+		<queryString>
+			<![CDATA[select * from SINHVIEN]]>
+		</queryString>
+		<field name="MASV" class="java.lang.String"/>
+		<field name="HO" class="java.lang.String"/>
+		<field name="TEN" class="java.lang.String"/>
+		<field name="NGAYSINH" class="java.sql.Date"/>
+		<field name="DIACHI" class="java.lang.String"/>
+		<field name="MALOP" class="java.lang.String"/>
+		<field name="PASSWORD" class="java.lang.String"/>
+		<field name="rowguid" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Table Dataset 2" uuid="3eaf6ce2-698f-41a9-bffe-dc4200234f4c"/>
+	<subDataset name="Table Dataset 3" uuid="0a5463b6-a494-40b1-864c-02fc842b4af0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\HP\\Desktop\\TN-CSDLPT\\src\\main\\java\\com\\ptithcm\\tn_csdlpt\\view\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fromDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titleCS1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titleCS2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[EXEC SP_LAPDANHSACHDANGKICS1 '$P!{fromDate}' , '$P!{endDate}';]]>
+	</queryString>
+	<field name="TENLOP" class="java.lang.String"/>
+	<field name="TENMH" class="java.lang.String"/>
+	<field name="HOTEN" class="java.lang.String"/>
+	<field name="SOCAUTHI" class="java.lang.Short"/>
+	<field name="NGAYTHI" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="48" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="46" uuid="f82131e5-5fb9-4179-a530-4674fcb4599d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="46" uuid="1a21d3c0-8165-4d04-a9df-49efc1c70b0e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titleCS1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="22" y="2" width="100" height="34" uuid="43747a3b-7d41-4087-83c0-2f90d3f8143f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÊN LỚP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="2" width="100" height="34" uuid="5b2d5c66-f07d-4ea1-9d61-142f3edc5e76"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÊN MÔN HỌC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="2" width="100" height="34" uuid="a9b5c595-e0f5-4428-a02a-a50e9e4ca449"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HỌ TÊN GIẢNG VIÊN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="2" width="57" height="34" uuid="7a1919a2-d9d4-4d3c-a1e9-6b028ffa44ba"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SỐ CÂU THI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="2" width="67" height="34" uuid="f1453d7b-a23a-4747-8661-280f4d8a3311"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NGÀY THI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="22" height="34" uuid="631375d9-382d-4099-bda9-0cf62548715d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="2" width="39" height="34" uuid="a9143e5b-a3f3-46ac-982b-888c06596ab8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ĐÃ THI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="484" y="2" width="71" height="34" uuid="2b670679-9434-4430-af14-acde7b59b7fd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GHI CHÚ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="36" width="555" height="1" uuid="373d0a9b-bd94-47d4-bbd9-bf2fa2845584"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="0" width="100" height="20" uuid="ea3cd4b1-e9ff-47c1-bbb6-06a2feb4dee2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TENLOP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="122" y="0" width="100" height="20" uuid="eea4a89d-e3bd-43a1-911d-bb00dfa1745c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TENMH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="0" width="99" height="20" uuid="1b9a05f3-54f5-416a-9d1f-a9f3ccfb6ed6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HOTEN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="0" width="57" height="20" uuid="9457199d-350c-47de-8a1f-25f8470764da"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOCAUTHI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="22" height="20" uuid="c37a4027-58de-4d02-ae53-2c236f04e326"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="DaThi" x="445" y="0" width="39" height="20" uuid="3a670b35-5bbd-455d-9c55-100ed461f8e0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="22" width="555" height="1" uuid="0b029b11-e77f-448b-a8aa-c623d0d94606"/>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="378" y="0" width="67" height="20" uuid="919109e2-df01-49af-87d4-f9029c28496c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NGAYTHI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="303"/>
+	</columnFooter>
+	<summary>
+		<band height="76" splitType="Stretch">
+			<elementGroup/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="76" uuid="f8a4c2d0-1366-4e35-9349-1188aa29c56a"/>
+				<subreportParameter name="endDate">
+					<subreportParameterExpression><![CDATA[$P{endDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fromDate">
+					<subreportParameterExpression><![CDATA[$P{fromDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tiltleCS2">
+					<subreportParameterExpression><![CDATA[$P{titleCS2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReportDangKiCS2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

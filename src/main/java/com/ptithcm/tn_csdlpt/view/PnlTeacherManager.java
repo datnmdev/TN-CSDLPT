@@ -17,6 +17,7 @@ import static com.ptithcm.tn_csdlpt.model.dto.ActionStatusEnum.INSERT;
 import static com.ptithcm.tn_csdlpt.model.dto.ActionStatusEnum.UPDATE;
 import com.ptithcm.tn_csdlpt.model.dto.GiaoVienDto;
 import com.ptithcm.tn_csdlpt.model.dto.ObjectAction;
+import com.ptithcm.tn_csdlpt.repository.CreateLoginRepository;
 import com.ptithcm.tn_csdlpt.repository.GiaoVienRepository;
 import com.ptithcm.tn_csdlpt.service.GiaoVienService;
 import com.ptithcm.tn_csdlpt.service.SubscriberService;
@@ -54,6 +55,13 @@ public class PnlTeacherManager extends javax.swing.JPanel {
     private FrmMain frmMain;
     private String tabName;
     private String magv;
+
+    //dùng để kiểm tra xem các giáo viên thuộc nhóm quyền của tài khoản hiện tại
+    List<String> stringList = new ArrayList<String>();
+
+    //dùng để kiểm tra xem các giáo viên có tài khoản hay chưa
+    List<String> stringList1 = new ArrayList<String>();
+
     private List<ObjectAction> objectActions = new ArrayList<>();
     private UndoRedo undoRedo = new UndoRedo();
     private JPanel pnlObjectInfo;
@@ -61,9 +69,9 @@ public class PnlTeacherManager extends javax.swing.JPanel {
     /**
      * Creates new form pnlWorkSection
      */
-    public PnlTeacherManager(String tabName, String groupName) throws IOException {
+    public PnlTeacherManager(FrmMain frmMain, String tabName, String groupName) throws IOException {
         initComponents();
-        initMyComponents(tabName);
+        initMyComponents(tabName, frmMain);
         disableComponents(groupName);
         fillSideComboBox(groupName);
         addEvents();
@@ -209,7 +217,7 @@ public class PnlTeacherManager extends javax.swing.JPanel {
                 try {
                     //validate form
 
-                    ValidateFormService.validateFrmTeacherInfoAdd(pnlTeacherInfo , objectActions);
+                    ValidateFormService.validateFrmTeacherInfoAdd(pnlTeacherInfo, objectActions);
 
 //hàm thực thi chương trình
                     Khoa selectedKhoa = (Khoa) pnlTeacherInfo.getComboboxKhoa().getSelectedItem();
@@ -275,7 +283,7 @@ public class PnlTeacherManager extends javax.swing.JPanel {
 
                 try {
                     //hàm này dùng để bắt lỗi
-                    ValidateFormService.validateFrmTeacherInfoUpdate(pnlTeacherInfo , magv);
+                    ValidateFormService.validateFrmTeacherInfoUpdate(pnlTeacherInfo, magv);
 
                     //thục thi các câu lệnh
                     Khoa selectedKhoa = (Khoa) pnlTeacherInfo.getComboboxKhoa().getSelectedItem();
@@ -662,10 +670,25 @@ public class PnlTeacherManager extends javax.swing.JPanel {
     }
 
 //    Methods
-    public void initMyComponents(String tabName) {
+    public void initMyComponents(String tabName, FrmMain frmMain) {
         this.tabName = tabName;
+        this.frmMain = frmMain;
+
         pnlManageBarContainer.add((pnlManageBar = new PnlManageBar()));
         pnlDataEntryFormContainer.add((pnlTeacherInfo = new PnlTeacherInfo()));
+
+        pnlTeacherInfo.getBtnControlLogin().setEnabled(false);
+
+        try {
+            //lấy các giáo viên thuộc nhóm quyền hiện tại
+            stringList = CreateLoginRepository.findAll();
+
+            //lấy toàn bộ các user trên databae để xem nó đã có hay chưa
+            stringList1 = CreateLoginRepository.findAll99();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PnlTeacherManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -721,6 +744,22 @@ public class PnlTeacherManager extends javax.swing.JPanel {
         // dùng để so sánh khi mình tay đổi mã giảng viên thì vẫn biết giảng viên nào thay đổi
         magv = teacher.getMaGV();
 
+        //sẽ chuyền mã khoa đã chọn mà biến mã khoa ở trong frmMain để chuyển bị taọ form quản lý lớp
+        frmMain.setMagv(teacher.getMaGV());
+
+        //sẽ kiểm tra nếu mã giáo viên vừa nhấn có trong nhóm quyền của tk hiện tại thì nút quản lý sẽ được sáng
+        if (stringList.contains(teacher.getMaGV().strip())) {
+            pnlTeacherInfo.getBtnControlLogin().setEnabled(true);
+        } else {
+            pnlTeacherInfo.getBtnControlLogin().setEnabled(false);
+        }
+        
+        //kiểm tra xem nếu tài giáo viên chưa có tài khoản thì nút sáng
+        if (stringList1.contains(teacher.getMaGV().strip()) == false) {
+            pnlTeacherInfo.getBtnControlLogin().setEnabled(true);
+        } 
+        
+        
         pnlTeacherInfo.getTxtTeacherID().setText(teacher.getMaGV());
         pnlTeacherInfo.getTxtHo().setText(teacher.getHo());
         pnlTeacherInfo.getTxtTen().setText(teacher.getTen());

@@ -24,6 +24,7 @@ import com.ptithcm.tn_csdlpt.view.PnlMonHocInfo;
 import com.ptithcm.tn_csdlpt.view.PnlQuestionInfo;
 import com.ptithcm.tn_csdlpt.view.PnlStudentInfo;
 import com.ptithcm.tn_csdlpt.view.PnlTeacherInfo;
+import com.toedter.calendar.JDateChooser;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -244,4 +245,21 @@ public class ValidateFormService {
 
     }
 
+    //hàm báo lỗi form báo cáo thi
+    public static void validateFrmReportBaoCaoDangKi(JDateChooser txtFromDate,JDateChooser txtEndDate ) throws SQLException, InvalidInputException {
+        if (txtEndDate.getDate() == null ) {
+            throw new InvalidInputException("Ngày kết thúc không hợp lệ!");
+        } else if ( txtFromDate.getDate() == null) {
+            throw new InvalidInputException("Ngày bắt đầu không hợp lệ!");
+        } else if (txtEndDate.getDate().before(txtFromDate.getDate())) {
+            throw new InvalidInputException("Ngày kết thúc không được nhỏ hơn ngày bắt đầu!");
+        }else if ( !txtFromDate.isValid()) {
+            throw new InvalidInputException("Ngày bắt đầu không hợp lệ");
+        }else if ( !txtEndDate.isValid()) {
+            throw new InvalidInputException("Ngày kết thúc không hợp lệ");
+        }
+
+    }
+
+    
 }

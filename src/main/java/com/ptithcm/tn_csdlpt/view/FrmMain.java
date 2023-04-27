@@ -4,23 +4,37 @@
  */
 package com.ptithcm.tn_csdlpt.view;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.ptithcm.tn_csdlpt.controller.BoDeController;
 import com.ptithcm.tn_csdlpt.controller.GiangVienController;
 import com.ptithcm.tn_csdlpt.controller.KhoaController;
 import com.ptithcm.tn_csdlpt.controller.LopController;
 import com.ptithcm.tn_csdlpt.controller.MonHocController;
 import com.ptithcm.tn_csdlpt.controller.SinhVienController;
+import com.ptithcm.tn_csdlpt.exception.InvalidInputException;
 import com.ptithcm.tn_csdlpt.global_variable.LoginVariables;
 import com.ptithcm.tn_csdlpt.model.dto.Account;
+import com.ptithcm.tn_csdlpt.service.ValidateFormService;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -34,6 +48,7 @@ public class FrmMain extends javax.swing.JFrame {
     private PnlStatusBar pnlStatusBar;
     private PnlKhoaManager pnlKhoaManager;
     private String makh;
+    private String magv;
 
     /**
      * Creates new form FrmMain
@@ -43,7 +58,11 @@ public class FrmMain extends javax.swing.JFrame {
         initMyComponents();
         hideComponent(account.getGroupName());
         updateStatusBarData(account);
-        addEvents();
+        try {
+            addEvents();
+        } catch (ParseException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -77,7 +96,7 @@ public class FrmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 //    Methods
-    public void addEvents() {
+    public void addEvents() throws ParseException {
         pnlMenu.getBtnQuestionManage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -107,7 +126,41 @@ public class FrmMain extends javax.swing.JFrame {
                     tabbedPaneWorkspace.setSelectedIndex(tabIndex);
                 } else {
                     try {
-                        PnlTeacherManager pnlWorkSection = new PnlTeacherManager(tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+                        PnlTeacherManager pnlWorkSection = new PnlTeacherManager(_this, tabName, LoginVariables.databaseConnector.getAccount().getGroupName());
+
+                        //hàm này dùng để bấm nút tạo tap quản lý tài khoản 
+                        pnlWorkSection.getPnlTeacherInfo().getBtnControlLogin().addMouseListener(new MouseAdapter() {
+                            public void mouseClicked(MouseEvent e) {
+                                String tabName1 = "Tài khoản của " + magv;
+                                int tabIndex1 = tabbedPaneWorkspace.indexOfTab(tabName1);
+                                if (tabIndex1 != -1) {
+                                    tabbedPaneWorkspace.setSelectedIndex(tabIndex1);
+                                } else {
+                                    try {
+                                       
+                                        
+                                        System.out.println(LoginVariables.databaseConnector.getAccount().getGroupName().strip());
+                                        
+                                        if (LoginVariables.databaseConnector.getAccount().getGroupName().strip().equals("COSO")) {
+                                            System.out.println("   vô được day ànkjsdn       234234");
+                                            PnlCreateLoginCoSo pnlLoginManager = new PnlCreateLoginCoSo(magv);
+                                            tabbedPaneWorkspace.addTab(tabName1, pnlLoginManager);
+                                            tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName1);
+                                        } else if (LoginVariables.databaseConnector.getAccount().getGroupName().strip().equals("TRUONG")) {
+                                            PnlCreateLoginTruong pnlLoginManager = new PnlCreateLoginTruong(magv);
+                                            tabbedPaneWorkspace.addTab(tabName1, pnlLoginManager);
+                                            tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName1);
+
+                                        }
+
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                }
+                            }
+                        });
+
                         tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
                         tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
                         GiangVienController.renderData(pnlWorkSection);
@@ -165,7 +218,7 @@ public class FrmMain extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         pnlMenu.getBtnClassroomManage().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -186,7 +239,7 @@ public class FrmMain extends javax.swing.JFrame {
                                     tabbedPaneWorkspace.setSelectedIndex(tabIndex);
                                 } else {
                                     try {
-                                        PnlLopManager pnlLopManager = new PnlLopManager(tabName , LoginVariables.databaseConnector.getAccount().getGroupName(), makh);
+                                        PnlLopManager pnlLopManager = new PnlLopManager(tabName, LoginVariables.databaseConnector.getAccount().getGroupName(), makh);
                                         tabbedPaneWorkspace.addTab(tabName, pnlLopManager);
                                         tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
                                         LopController.renderData(pnlLopManager, makh);
@@ -207,6 +260,74 @@ public class FrmMain extends javax.swing.JFrame {
                     } catch (SQLException ex) {
                         Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+            }
+        });
+
+        pnlMenu.getBtnReportExamCalendar().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String tabName = pnlMenu.getBtnReportExamCalendar().getName();
+                int tabIndex = tabbedPaneWorkspace.indexOfTab(tabName);
+                if (tabIndex != -1) {
+                    tabbedPaneWorkspace.setSelectedIndex(tabIndex);
+                } else {
+
+                    PnlReportDangKiThi pnlWorkSection = new PnlReportDangKiThi();
+                    tabbedPaneWorkspace.addTab(tabName, pnlWorkSection);
+                    tabbedPaneWorkspace.setTitleAt(tabbedPaneWorkspace.getTabCount() - 1, tabName);
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
+
+                    //hàm này dùng để khi nhấn vô nút in báo cáo thì nó sẽ vào hàm này
+                    pnlWorkSection.getBtnPrint().addMouseListener(new MouseAdapter() {
+                        public void mouseClicked(MouseEvent e) {
+                            try {
+
+                                ValidateFormService.validateFrmReportBaoCaoDangKi(pnlWorkSection.getTxtFromDate(), pnlWorkSection.getTxtEndDate());
+
+                                Hashtable map = new Hashtable();
+                                JasperReport rpt = JasperCompileManager.compileReport("C:\\Users\\HP\\Desktop\\TN-CSDLPT\\src\\main\\java\\com\\ptithcm\\tn_csdlpt\\view\\ReportBaoCaoDangKiThi.jrxml");
+
+                                Date fromDate = pnlWorkSection.getTxtFromDate().getDate();
+                                String fromDateStr = dateFormat.format(fromDate);
+                                String fromDateStr1 = dateFormat1.format(fromDate);
+
+                                Date endDate = pnlWorkSection.getTxtEndDate().getDate();
+                                String endDateStr = dateFormat.format(endDate);
+                                String endDateStr1 = dateFormat1.format(endDate);
+
+                                //gắn tham số
+                                map.put("endDate", endDateStr);
+                                map.put("fromDate", fromDateStr);
+                                map.put("titleCS1", "DANH SÁCH ĐĂNG KÝ THI TRẮC NGHIỆM CƠ SỞ 1\n"
+                                        + "TỪ NGÀY " + fromDateStr1 + " ĐẾN NGÀY " + endDateStr1);
+                                map.put("titleCS2", "DANH SÁCH ĐĂNG KÝ THI TRẮC NGHIỆM CƠ SỞ 2\n"
+                                        + "TỪ NGÀY " + fromDateStr1 + " ĐẾN NGÀY " + endDateStr1);
+
+                                Connection connection = LoginVariables.databaseConnector.getConnection();
+
+                                //ánh xạ tham số và kết nối
+                                JasperPrint p = JasperFillManager.fillReport(rpt, map, connection);
+
+                                //gắn vào jpanel
+                                JRViewer v = new JRViewer(p);
+                                pnlWorkSection.getMainReport().add(v);
+
+                            } catch (JRException ex) {
+                                MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                            } catch (SQLServerException ex) {
+                                MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                            } catch (SQLException ex) {
+                                MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                            } catch (InvalidInputException ex) {
+                                MessageBox.showErrorBox(ex.getClass().getName(), ex.getMessage());
+                            }
+
+                        }
+                    });
+
                 }
             }
         });
@@ -305,6 +426,14 @@ public class FrmMain extends javax.swing.JFrame {
 
     public void setMakh(String makh) {
         this.makh = makh;
+    }
+
+    public String getMagv() {
+        return magv;
+    }
+
+    public void setMagv(String magv) {
+        this.magv = magv;
     }
 
 
